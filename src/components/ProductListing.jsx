@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 const RECIPES = [
   {
@@ -546,7 +547,7 @@ export function RecipeCarousel() {
 
       {/* Scrolling strip */}
       <div
-        style={{ overflow: 'hidden', cursor: 'none', margin: '0 -40px' }}
+        className="recipe-strip" style={{ overflow: 'hidden', cursor: 'none', margin: '0 -40px' }}
         onMouseEnter={() => { if (innerRef.current) innerRef.current.style.animationPlayState = 'paused' }}
         onMouseLeave={() => { if (innerRef.current) innerRef.current.style.animationPlayState = 'running' }}
       >
@@ -568,6 +569,7 @@ export default function ProductListing() {
   const [sort, setSort] = useState('Popularity')
   const [sortOpen, setSortOpen] = useState(false)
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+  const isMobile = useIsMobile()
 
   const toggleOpen = label => {
     setFilters(f => f.map(x => x.label === label ? { ...x, open: !x.open } : x))
@@ -581,12 +583,12 @@ export default function ProductListing() {
   }
 
   return (
-    <section id="collection" style={{ background: '#f8f7f5', padding: '72px 0 100px' }}>
-      <div style={{ maxWidth: 1380, margin: '0 auto', padding: '0 40px' }}>
+    <section id="collection" className="listing-section" style={{ background: '#f8f7f5', padding: '72px 0 100px' }}>
+      <div className="listing-container" style={{ maxWidth: 1380, margin: '0 auto', padding: '0 40px' }}>
 
         {/* Section header */}
         <div style={{ marginBottom: 48, paddingBottom: 32, borderBottom: '1px solid rgba(26,22,20,0.08)' }}>
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+          <div className="listing-header-row" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
             <div>
               <p style={{
                 fontFamily: '"Futura LT Pro", system-ui, sans-serif',
@@ -606,7 +608,7 @@ export default function ProductListing() {
                 Family-owned since 1887. Six generations of Franconian brewing tradition — unfiltered, uncompromising, and entirely independent.
               </p>
             </div>
-            <p style={{
+            <p className="listing-ghost" style={{
               fontFamily: '"Cormorant Garamond", Georgia, serif',
               fontSize: '3rem', fontWeight: 300, color: 'rgba(26,22,20,0.08)',
               letterSpacing: '-0.02em', lineHeight: 1,
@@ -631,20 +633,35 @@ export default function ProductListing() {
           ⊟ Filter & Sort
         </button>
 
-        <div className="listing-layout" style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: 48, alignItems: 'start' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '220px 1fr',
+          gap: isMobile ? 0 : 48,
+          alignItems: 'start',
+        }}>
 
-          {/* ── Sidebar ── */}
-          <aside className={`listing-sidebar${mobileFiltersOpen ? ' mobile-open' : ''}`} style={{ position: 'sticky', top: 100 }}>
+          {/* ── Sidebar — masaüstünde sabit, mobilde overlay ── */}
+          {(!isMobile || mobileFiltersOpen) && (
+          <aside style={{
+            position: mobileFiltersOpen ? 'fixed' : 'sticky',
+            inset: mobileFiltersOpen ? 0 : 'auto',
+            top: mobileFiltersOpen ? 0 : 100,
+            zIndex: mobileFiltersOpen ? 99 : 'auto',
+            background: '#f0eeea',
+            overflowY: mobileFiltersOpen ? 'auto' : 'visible',
+            padding: mobileFiltersOpen ? '72px 24px 60px' : 0,
+          }}>
             {/* Mobile close button */}
+            {mobileFiltersOpen && (
             <button
               onClick={() => setMobileFiltersOpen(false)}
-              className="md:hidden"
               style={{
-                position: 'absolute', top: 24, right: 24,
-                background: 'none', border: 'none', cursor: 'none',
-                fontSize: 22, color: '#1a1614',
+                position: 'absolute', top: 20, right: 20,
+                background: 'none', border: 'none', cursor: 'pointer',
+                fontSize: 22, color: '#1a1614', lineHeight: 1,
               }}
             >✕</button>
+            )}
             <p style={{
               fontFamily: '"Futura LT Pro", system-ui, sans-serif',
               fontSize: 9, fontWeight: 700, letterSpacing: '0.4em',
@@ -661,11 +678,12 @@ export default function ProductListing() {
               />
             ))}
           </aside>
+          )}
 
           {/* ── Main content ── */}
           <div>
             {/* Toolbar */}
-            <div style={{
+            <div className="toolbar-row" style={{
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
               marginBottom: 28, paddingBottom: 18,
               borderBottom: '1px solid rgba(26,22,20,0.08)',
@@ -725,10 +743,10 @@ export default function ProductListing() {
             </div>
 
             {/* Product grid */}
-            <div className="product-grid" style={{
+            <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: 24,
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+              gap: isMobile ? 16 : 24,
             }}>
               {PRODUCTS.map(p => <ProductCard key={p.id} p={p} />)}
             </div>

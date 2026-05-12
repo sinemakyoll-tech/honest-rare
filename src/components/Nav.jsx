@@ -27,7 +27,7 @@ export default function Nav() {
         transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         {/* Top row */}
-        <div className="flex items-center justify-between" style={{
+        <div className="nav-row flex items-center justify-between" style={{
           paddingTop: scrolled ? 10 : 18, paddingBottom: scrolled ? 10 : 18,
           paddingLeft: 40, paddingRight: 40,
           borderBottom: scrolled ? '1px solid rgba(26,22,20,0.07)' : '1px solid transparent',

@@ -165,7 +165,7 @@ function ProjectPanel({ project }) {
 
       {/* Ambient giant number */}
       <div
-        className="absolute select-none pointer-events-none"
+        className="panel-num absolute select-none pointer-events-none"
         style={{
           [isFlip ? 'left' : 'right']: '2%',
           top: '50%', transform: 'translateY(-50%)',
@@ -318,7 +318,7 @@ export default function LifestyleProjects() {
         className="relative overflow-hidden noise"
         style={{
           background: '#08070a',
-          padding: 'clamp(5rem, 10vw, 9rem) clamp(2.5rem, 8vw, 8rem) clamp(3rem, 6vw, 6rem)',
+          padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 8vw, 8rem) clamp(3rem, 6vw, 6rem)',
         }}
       >
         <h2 style={{
@@ -366,7 +366,7 @@ export default function LifestyleProjects() {
 
       {/* Journal CTA */}
       <div
-        className="text-center"
+        className="lifestyle-journal text-center"
         style={{
           background: '#09080b',
           borderTop: '1px solid rgba(212,184,150,0.07)',

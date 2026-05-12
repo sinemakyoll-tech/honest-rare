@@ -57,7 +57,7 @@ export default function Footer() {
       </div>
 
       {/* Main footer body */}
-      <div className="px-6 md:px-16 pt-20 pb-12">
+      <div className="footer-body px-6 md:px-16 pt-20 pb-12">
         <div className="footer-grid grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-8 mb-16">
 
           {/* Brand column */}
@@ -111,7 +111,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div style={{
+        <div className="footer-bottom" style={{
           display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center',
           paddingTop: '2rem', gap: '1rem',
           borderTop: '1px solid rgba(212,184,150,0.06)',
@@ -119,7 +119,7 @@ export default function Footer() {
           <p className="font-body text-[11px] text-cream/22 tracking-wide">
             © 2024 Honest &amp; Rare S.r.l. — Firenze, Italia. All rights reserved.
           </p>
-          <div style={{ display: 'flex', gap: '2rem' }}>
+          <div className="footer-links-row" style={{ display: 'flex', gap: '2rem' }}>
             {['Privacy Policy', 'Terms of Use', 'Cookie Preferences'].map(t => (
               <a key={t} href="#"
                  className="font-body text-[11px] text-cream/22 no-underline

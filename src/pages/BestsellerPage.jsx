@@ -384,7 +384,7 @@ export default function BestsellerPage() {
       <main style={{ paddingTop: 36 }}>
 
         {/* Hero */}
-        <section style={{
+        <section className="bs-hero" style={{
           background: '#1a1614',
           padding: 'clamp(8rem, 14vw, 12rem) clamp(2rem, 8vw, 8rem) clamp(4rem, 8vw, 7rem)',
           position: 'relative', overflow: 'hidden',
@@ -463,7 +463,7 @@ export default function BestsellerPage() {
 
         {/* Products */}
         <section style={{ background: '#f8f7f5', padding: 'clamp(4rem, 8vw, 6rem) clamp(2rem, 6vw, 8rem)' }}>
-          <div style={{ maxWidth: 1380, margin: '0 auto' }}>
+          <div className="bs-container" style={{ maxWidth: 1380, margin: '0 auto' }}>
 
             {/* Toolbar */}
             <div style={{
