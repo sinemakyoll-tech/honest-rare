@@ -73,8 +73,8 @@ export default function Footer() {
               }}
             />
             <p className="font-body text-sm text-cream/35 leading-relaxed mb-8 max-w-[220px]">
-              Premium olive oil crafted for tables that deserve it.
-              Grove to bottle. No compromise.
+              9,500 independent products. No mainstream.
+              Just honest, rare finds.
             </p>
             {/* Social */}
             <div style={{ display: 'flex', gap: '12px' }}>
