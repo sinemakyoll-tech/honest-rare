@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'motion/react'
+import RainbowGlassButton from './RainbowGlassButton'
 
 const PROJECTS = [
   {
@@ -260,9 +261,18 @@ function ProjectPanel({ project }) {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.7 }}
           >
-            <a href="#" className="btn-ghost" style={{ fontSize: 11 }}>
+            <RainbowGlassButton
+              as="a"
+              href="#"
+              style={{
+                fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+                fontSize: 11, fontWeight: 700, letterSpacing: '0.25em',
+                textTransform: 'uppercase', color: '#f0e8d8',
+                padding: '15px 38px',
+              }}
+            >
               Full Recipe →
-            </a>
+            </RainbowGlassButton>
           </motion.div>
         </div>
 
