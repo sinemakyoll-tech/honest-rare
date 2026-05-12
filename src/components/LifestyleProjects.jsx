@@ -163,22 +163,6 @@ function ProjectPanel({ project }) {
           : 'linear-gradient(90deg,  rgba(7,6,10,0.94) 0%, rgba(7,6,10,0.72) 45%, rgba(7,6,10,0.28) 100%)',
       }} />
 
-      {/* Ambient giant number */}
-      <div
-        className="panel-num absolute select-none pointer-events-none"
-        style={{
-          [isFlip ? 'left' : 'right']: '2%',
-          top: '50%', transform: 'translateY(-50%)',
-          fontFamily: '"Cormorant Garamond", Georgia, serif',
-          fontWeight: 300,
-          fontSize: 'clamp(10rem, 28vw, 30rem)',
-          color: 'rgba(212,184,150,0.04)',
-          lineHeight: 1,
-        }}
-      >
-        {project.num}
-      </div>
-
       {/* Top meta bar */}
       <div
         className="absolute top-8 left-10 right-10 flex justify-between items-center"
@@ -190,13 +174,6 @@ function ProjectPanel({ project }) {
           color: 'rgba(212,184,150,0.5)',
         }}>
           {project.tag}
-        </span>
-        <span style={{
-          fontFamily: '"Cormorant Garamond", Georgia, serif',
-          fontWeight: 300, fontSize: '0.85rem',
-          color: 'rgba(212,184,150,0.32)',
-        }}>
-          {project.num} / 04
         </span>
       </div>
 
@@ -360,8 +337,37 @@ export default function LifestyleProjects() {
       </div>
 
       {/* Full-viewport project panels */}
-      {PROJECTS.map((project) => (
-        <ProjectPanel key={project.num} project={project} />
+      {PROJECTS.map((project, i) => (
+        <>
+          <ProjectPanel key={project.num} project={project} />
+          {i < PROJECTS.length - 1 && (
+            <div key={`divider-${i}`} style={{
+              background: '#09080b',
+              borderTop: '1px solid rgba(212,184,150,0.06)',
+              borderBottom: '1px solid rgba(212,184,150,0.06)',
+              padding: '14px 0', overflow: 'hidden',
+            }}>
+              <div className="marquee-inner" style={{ display: 'flex', width: 'max-content' }}>
+                {Array.from({ length: 2 }, (_, k) => (
+                  <div key={k} style={{ display: 'flex' }}>
+                    {['Quality over Quantity', '9,500 Products', 'No Mainstream', 'Est. 2018',
+                      'Independent Brands', 'No Algorithms', 'Honest Finds', 'Rare Selection'].map(t => (
+                      <span key={t} style={{
+                        display: 'inline-flex', alignItems: 'center', gap: '1.5rem',
+                        padding: '0 2.5rem',
+                        fontSize: '10px', letterSpacing: '0.4em', textTransform: 'uppercase',
+                        color: 'rgba(212,184,150,0.45)',
+                        fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+                      }}>
+                        {t} <span style={{ width: 3, height: 3, borderRadius: '50%', background: 'rgba(212,184,150,0.3)', display: 'inline-block' }} />
+                      </span>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       ))}
 
       {/* Journal CTA */}
