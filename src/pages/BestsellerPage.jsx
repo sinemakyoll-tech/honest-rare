@@ -379,9 +379,9 @@ export default function BestsellerPage() {
         <span>✦ 9,500 independent products</span>
         <span>✦ No mainstream</span>
       </div>
-      <Nav />
+      <Nav top={36} />
 
-      <main style={{ paddingTop: 36 }}>
+      <main style={{ paddingTop: 0 }}>
 
         {/* Hero */}
         <section className="bs-hero" style={{
