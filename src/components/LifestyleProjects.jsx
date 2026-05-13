@@ -98,14 +98,14 @@ function CardStack({ cards }) {
             <p style={{
               fontFamily: '"DM Sans", system-ui, sans-serif',
               fontSize: 9, letterSpacing: '0.45em', textTransform: 'uppercase',
-              color: '#d4b896', marginBottom: 20,
+              color: '#c4933f', marginBottom: 20,
             }}>
               {card.head}
             </p>
             <div style={{
               fontFamily: '"Cormorant Garamond", Georgia, serif',
               fontWeight: 300, fontSize: '1.1rem', lineHeight: 1.55,
-              color: 'rgba(240,232,216,0.88)',
+              color: 'rgba(26,22,20,0.85)',
             }}>
               {card.body.split('\n').map((line, j) => (
                 <span key={j} style={{ display: 'block' }}>{line}</span>
@@ -116,7 +116,7 @@ function CardStack({ cards }) {
                 marginTop: 'auto',
                 fontFamily: '"DM Sans", system-ui, sans-serif',
                 fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase',
-                color: 'rgba(240,232,216,0.2)', textAlign: 'center',
+                color: 'rgba(26,22,20,0.2)', textAlign: 'center',
               }}>
                 hover
               </div>
