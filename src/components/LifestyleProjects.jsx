@@ -26,7 +26,7 @@ const PROJECTS = [
     title: 'Carpaccio\ndi Manzo',
     subtitle: 'with Aged Riserva',
     desc: `Paper-thin Chianina beef laid over rocket, topped with shaved Parmigiano. The Riserva is drizzled last — its bitterness cuts through the richness, its fruitiness lifts every bite. A four-ingredient dish with a hundred layers of meaning.`,
-    image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=1920&q=85&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1727243866425-3bf2cbf7480a?w=1920&q=95&auto=format&fit=crop',
     fallback: '#0d1209',
     cards: [
       { head: 'The Oil', body: 'H&R Riserva 2022\nCentennial Frantoio · Chianti' },
