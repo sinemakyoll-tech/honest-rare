@@ -184,8 +184,12 @@
   transition: width 0.4s cubic-bezier(.34,1.56,.64,1),
               height 0.4s cubic-bezier(.34,1.56,.64,1);
 }
-#hr-cursor.large  { width: 14px; height: 14px; background: #c4933f; }
-#hr-cursor-ring.large { width: 54px; height: 54px; border-color: rgba(196,147,63,0.45); }
+#hr-cursor.large       { width: 14px; height: 14px; background: #c4933f; }
+#hr-cursor-ring.large  { width: 54px; height: 54px; border-color: rgba(196,147,63,0.45); }
+#hr-cursor.on-dark     { background: #d4b896; }
+#hr-cursor-ring.on-dark{ border-color: rgba(212,184,150,0.45); }
+#hr-cursor.on-dark.large     { background: #c4933f; }
+#hr-cursor-ring.on-dark.large{ border-color: rgba(196,147,63,0.6); }
 
 /* ── Marquee ── */
 @keyframes marquee-left {

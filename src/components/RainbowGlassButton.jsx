@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 
-export default function RainbowGlassButton({ children, as: Tag = 'button', href, onClick, className = '', style = {} }) {
+export default function RainbowGlassButton({ children, as: Tag = 'button', href, to, onClick, className = '', style = {} }) {
   const ref = useRef(null)
   const [pos, setPos] = useState({ x: -200, y: -200 })
   const [hovered, setHovered] = useState(false)
@@ -12,7 +12,7 @@ export default function RainbowGlassButton({ children, as: Tag = 'button', href,
 
   const props = {
     ref,
-    href,
+    ...(to ? { to } : { href }),
     onClick,
     onMouseMove: handleMouseMove,
     onMouseEnter: () => setHovered(true),

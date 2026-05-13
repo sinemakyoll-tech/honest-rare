@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence, useScroll } from 'motion/react'
 import { Link } from 'react-router-dom'
 
-const CATEGORIES = ['Bestseller', 'Spirits', 'Gin', 'Craft Beer', 'Coffee/Tea', 'Snacks', 'Spices', 'Wine']
+const CATEGORIES = ['Bestseller', 'Journal', 'Spirits', 'Gin', 'Craft Beer', 'Coffee/Tea', 'Snacks', 'Spices', 'Wine']
 
-export default function Nav() {
+export default function Nav({ top = 36 }) {
   const [scrolled, setScrolled]   = useState(false)
   const [menuOpen, setMenuOpen]   = useState(false)
   const [activeTab, setActiveTab] = useState('Drinking')
@@ -19,7 +19,7 @@ export default function Nav() {
       {/* ── Main nav ── */}
       <motion.nav
         className="fixed left-0 right-0 z-50 flex flex-col"
-        style={{ top: 36 }}
+        style={{ top }}
         animate={{
           backgroundColor: scrolled ? 'rgba(240,238,234,0.96)' : 'rgba(240,238,234,0)',
           backdropFilter:  scrolled ? 'blur(20px)' : 'blur(0px)',
@@ -111,8 +111,8 @@ export default function Nav() {
             style={{ padding: '10px 40px', borderBottom: '1px solid rgba(26,22,20,0.07)' }}
           >
             {CATEGORIES.map(cat => (
-              cat === 'Bestseller' ? (
-                <Link key={cat} to="/bestseller" style={{
+              cat === 'Bestseller' || cat === 'Journal' ? (
+                <Link key={cat} to={cat === 'Bestseller' ? '/bestseller' : '/lifestyle'} style={{
                   fontFamily: '"Futura LT Pro", system-ui, sans-serif',
                   fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase',
                   color: '#c4933f', textDecoration: 'none', transition: 'color 0.25s',

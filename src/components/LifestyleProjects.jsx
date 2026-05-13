@@ -1,10 +1,12 @@
 import { useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { motion, useInView, useScroll, useTransform } from 'motion/react'
 import RainbowGlassButton from './RainbowGlassButton'
 
 const PROJECTS = [
   {
     num: '01',
+    id: 'the-mountain-mule',
     type: 'cocktail',
     tag: 'Cocktail · Mountain Ritual',
     title: 'The Mountain\nMule',
@@ -21,6 +23,7 @@ const PROJECTS = [
   },
   {
     num: '02',
+    id: 'carpaccio-di-manzo',
     type: 'recipe',
     tag: 'Recipe · Winter Table',
     title: 'Carpaccio\ndi Manzo',
@@ -37,6 +40,7 @@ const PROJECTS = [
   },
   {
     num: '03',
+    id: 'the-alpine-negroni',
     type: 'cocktail',
     tag: 'Cocktail · Après-Ski',
     title: 'The Alpine\nNegroni',
@@ -262,8 +266,8 @@ function ProjectPanel({ project }) {
             transition={{ duration: 0.7, delay: 0.7 }}
           >
             <RainbowGlassButton
-              as="a"
-              href="#"
+              as={Link}
+              to={`/recipe/${project.id}`}
               style={{
                 fontFamily: '"Futura LT Pro", system-ui, sans-serif',
                 fontSize: 11, fontWeight: 700, letterSpacing: '0.25em',
