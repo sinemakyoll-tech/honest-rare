@@ -303,42 +303,61 @@ export default function LifestyleProjects() {
   return (
     <section id="lifestyle">
 
-      {/* Header */}
+      {/* Header — video-through-text mask */}
       <div
         ref={headerRef}
-        className="relative overflow-hidden noise"
+        className="overflow-hidden"
         style={{
-          background: '#08070a',
+          position: 'relative',
+          background: '#000',
+          isolation: 'isolate',
           padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 8vw, 8rem) clamp(3rem, 6vw, 6rem)',
         }}
       >
-        <h2 style={{
-          fontFamily: '"Cormorant Garamond", Georgia, serif',
-          fontWeight: 300, lineHeight: 0.92,
-          fontSize: 'clamp(3.5rem, 9vw, 10rem)',
-          color: '#f0e8d8',
-        }}>
-          {['Content first.', 'Commerce second.'].map((line, i) => (
-            <div key={i} style={{ overflow: 'hidden' }}>
-              <motion.span
-                style={{ display: 'block' }}
-                initial={{ y: '100%' }}
-                animate={inView ? { y: '0%' } : {}}
-                transition={{ duration: 1.05, delay: 0.08 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-              >
-                {i === 1
-                  ? <em style={{ fontStyle: 'italic', color: '#d4b896' }}>{line}</em>
-                  : line
-                }
-              </motion.span>
-            </div>
-          ))}
-        </h2>
+        {/* Video: source layer behind the mask */}
+        <video
+          autoPlay muted loop playsInline
+          style={{
+            position: 'absolute', inset: 0,
+            width: '100%', height: '100%',
+            objectFit: 'cover',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        >
+          <source src="/bg-cocktail.mp4" type="video/mp4" />
+        </video>
 
+        {/* Multiply mask: black blocks the video everywhere except through white text */}
+        <div style={{ position: 'relative', zIndex: 1, background: '#000', mixBlendMode: 'multiply' }}>
+          <h2 style={{
+            fontFamily: '"Cormorant Garamond", Georgia, serif',
+            fontWeight: 300, lineHeight: 0.88,
+            fontSize: 'clamp(4rem, 11vw, 13rem)',
+            color: '#fff',
+            margin: 0,
+          }}>
+            {['Content first.', 'Commerce second.'].map((line, i) => (
+              <div key={i} style={{ overflow: 'hidden' }}>
+                <motion.span
+                  style={{ display: 'block' }}
+                  initial={{ y: '110%' }}
+                  animate={inView ? { y: '0%' } : {}}
+                  transition={{ duration: 1.05, delay: 0.08 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  {i === 1 ? <em style={{ fontStyle: 'italic' }}>{line}</em> : line}
+                </motion.span>
+              </div>
+            ))}
+          </h2>
+        </div>
+
+        {/* Paragraph: sits above the mask in normal colour */}
         <motion.p
           style={{
+            position: 'relative', zIndex: 2,
             fontFamily: '"DM Sans", system-ui, sans-serif',
-            fontSize: '0.93rem', color: 'rgba(240,232,216,0.38)',
+            fontSize: '0.93rem', color: 'rgba(240,232,216,0.45)',
             lineHeight: 1.85, maxWidth: '50ch', marginTop: '2.5rem',
           }}
           initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
