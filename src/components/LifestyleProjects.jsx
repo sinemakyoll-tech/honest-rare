@@ -311,10 +311,11 @@ export default function LifestyleProjects() {
           position: 'relative',
           background: '#000',
           isolation: 'isolate',
-          padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 8vw, 8rem) clamp(3rem, 6vw, 6rem)',
+          minHeight: 'clamp(420px, 65vh, 700px)',
+          display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
         }}
       >
-        {/* Video: source layer behind the mask */}
+        {/* Video: brightness boosted so it lights the text uniformly */}
         <video
           autoPlay muted loop playsInline
           style={{
@@ -323,13 +324,19 @@ export default function LifestyleProjects() {
             objectFit: 'cover',
             pointerEvents: 'none',
             zIndex: 0,
+            filter: 'brightness(2.8) saturate(1.4)',
           }}
         >
           <source src="/bg-cocktail.mp4" type="video/mp4" />
         </video>
 
-        {/* Multiply mask: black blocks the video everywhere except through white text */}
-        <div style={{ position: 'relative', zIndex: 1, background: '#000', mixBlendMode: 'multiply' }}>
+        {/* Full-coverage multiply mask: covers the entire section so no strip shows */}
+        <div style={{
+          position: 'absolute', inset: 0, zIndex: 1,
+          background: '#000', mixBlendMode: 'multiply',
+          display: 'flex', flexDirection: 'column', justifyContent: 'center',
+          padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 8vw, 8rem) clamp(3rem, 6vw, 6rem)',
+        }}>
           <h2 style={{
             fontFamily: '"Cormorant Garamond", Georgia, serif',
             fontWeight: 300, lineHeight: 0.88,
@@ -352,13 +359,14 @@ export default function LifestyleProjects() {
           </h2>
         </div>
 
-        {/* Paragraph: sits above the mask in normal colour */}
+        {/* Paragraph: outside the mask, sits in normal flow to anchor container height */}
         <motion.p
           style={{
             position: 'relative', zIndex: 2,
             fontFamily: '"DM Sans", system-ui, sans-serif',
             fontSize: '0.93rem', color: 'rgba(240,232,216,0.45)',
-            lineHeight: 1.85, maxWidth: '50ch', marginTop: '2.5rem',
+            lineHeight: 1.85, maxWidth: '50ch',
+            padding: '0 clamp(1.5rem, 8vw, 8rem) clamp(3rem, 6vw, 6rem)',
           }}
           initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.44 }}
