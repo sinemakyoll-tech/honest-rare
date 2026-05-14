@@ -328,15 +328,16 @@ export default function LifestyleProjects() {
         {/* Dark gradient overlay so text stays crisp */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(135deg, rgba(8,7,10,0.85) 0%, rgba(8,7,10,0.45) 100%)',
+          background: 'linear-gradient(135deg, rgba(8,7,10,0.55) 0%, rgba(8,7,10,0.25) 100%)',
           pointerEvents: 'none',
         }} />
 
         <h2 style={{ position: 'relative', zIndex: 1,
           fontFamily: '"Cormorant Garamond", Georgia, serif',
           fontWeight: 300, lineHeight: 0.92,
-          fontSize: 'clamp(3.5rem, 9vw, 10rem)',
+          fontSize: 'clamp(2.2rem, 5.5vw, 6rem)',
           color: '#f0e8d8',
+          textAlign: 'center',
         }}>
           {['Content first.', 'Commerce second.'].map((line, i) => (
             <div key={i} style={{ overflow: 'hidden' }}>
@@ -361,6 +362,7 @@ export default function LifestyleProjects() {
             fontFamily: '"DM Sans", system-ui, sans-serif',
             fontSize: '0.93rem', color: 'rgba(240,232,216,0.38)',
             lineHeight: 1.85, maxWidth: '50ch', marginTop: '2.5rem',
+            textAlign: 'center', margin: '2rem auto 0',
           }}
           initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.44 }}
