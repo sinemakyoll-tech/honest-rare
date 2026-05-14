@@ -312,7 +312,27 @@ export default function LifestyleProjects() {
           padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 8vw, 8rem) clamp(3rem, 6vw, 6rem)',
         }}
       >
-        <h2 style={{
+        {/* Background video */}
+        <video
+          autoPlay muted loop playsInline
+          style={{
+            position: 'absolute', inset: 0,
+            width: '100%', height: '100%',
+            objectFit: 'cover',
+            opacity: 0.22,
+            pointerEvents: 'none',
+          }}
+        >
+          <source src="/bg-cocktail.mp4" type="video/mp4" />
+        </video>
+        {/* Dark gradient overlay so text stays crisp */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(135deg, rgba(8,7,10,0.85) 0%, rgba(8,7,10,0.45) 100%)',
+          pointerEvents: 'none',
+        }} />
+
+        <h2 style={{ position: 'relative', zIndex: 1,
           fontFamily: '"Cormorant Garamond", Georgia, serif',
           fontWeight: 300, lineHeight: 0.92,
           fontSize: 'clamp(3.5rem, 9vw, 10rem)',
@@ -337,6 +357,7 @@ export default function LifestyleProjects() {
 
         <motion.p
           style={{
+            position: 'relative', zIndex: 1,
             fontFamily: '"DM Sans", system-ui, sans-serif',
             fontSize: '0.93rem', color: 'rgba(240,232,216,0.38)',
             lineHeight: 1.85, maxWidth: '50ch', marginTop: '2.5rem',
