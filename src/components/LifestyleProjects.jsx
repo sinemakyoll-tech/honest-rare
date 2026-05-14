@@ -333,7 +333,7 @@ export default function LifestyleProjects() {
           <h2 style={{
             fontFamily: '"Cormorant Garamond", Georgia, serif',
             fontWeight: 300, lineHeight: 0.88,
-            fontSize: 'clamp(4rem, 11vw, 13rem)',
+            fontSize: 'clamp(3rem, 7vw, 8.5rem)',
             color: '#fff',
             margin: 0,
           }}>
