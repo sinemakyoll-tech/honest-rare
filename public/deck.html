@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Honest & Rare — Digital Transformation</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+
+  <style>
+    :root {
+      --bg:     #080604;
+      --dark:   #1a1614;
+      --cream:  #f0eeea;
+      --gold:   #c4933f;
+      --muted:  rgba(240,238,234,0.45);
+      --muted2: rgba(240,238,234,0.22);
+      --serif:  'Cormorant Garamond', Georgia, serif;
+      --sans:   'Helvetica Neue', system-ui, -apple-system, sans-serif;
+    }
+
+    .reveal-viewport { background: var(--bg); }
+    .reveal { font-family: var(--sans); color: var(--cream); }
+    .reveal .slides { text-align: left; }
+    .reveal .slides section { padding: 0; height: 100%; box-sizing: border-box; }
+    .reveal h1,.reveal h2,.reveal h3 { font-family: var(--serif); font-weight: 300; text-transform: none; margin: 0; line-height: 1.0; color: var(--cream); letter-spacing: -0.02em; }
+    .reveal p { margin: 0; }
+
+    /* Progress */
+    .reveal .progress { height: 2px; color: var(--gold); background: rgba(196,147,63,0.18); }
+    .reveal .progress span { background: var(--gold); }
+    .reveal .controls { color: var(--gold); }
+    .reveal .slide-number { font-family: var(--sans); font-size: 10px; letter-spacing: 0.2em; color: rgba(240,238,234,0.25); background: transparent; bottom: 18px; right: 22px; }
+
+    /* ─── FRAGMENTS ─── */
+    .reveal .fragment { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .reveal .fragment.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── SHARED ─── */
+    .label {
+      display: block;
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: 0.48em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.9em;
+    }
+    .rule { display: block; width: 52px; height: 1px; background: var(--gold); border: none; margin: 0.9em 0; }
+    .rule--light { background: rgba(196,147,63,0.35); }
+
+    /* ─── ANNOTATION CARD ─── */
+    .ann {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 13px 15px;
+      background: rgba(240,238,234,0.04);
+      border-left: 2px solid rgba(196,147,63,0.4);
+      margin-bottom: 10px;
+    }
+    .ann-num {
+      flex-shrink: 0;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: #080604;
+      font-size: 9px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--sans);
+      margin-top: 1px;
+    }
+    .ann-title {
+      display: block;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--cream);
+      margin-bottom: 3px;
+      text-transform: uppercase;
+    }
+    .ann-body {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    /* ─── SLIDE CAPTION (below screenshot) ─── */
+    .slide-caption {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--muted);
+      padding: 18px 28px;
+      border-top: 1px solid rgba(196,147,63,0.15);
+      background: rgba(8,6,4,0.6);
+    }
+
+    /* ─── PIN DOT ─── */
+    .pin-dot {
+      position: absolute;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: #080604;
+      font-size: 9px;
+      font-weight: 800;
+      font-family: var(--sans);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 3px rgba(196,147,63,0.3), 0 4px 16px rgba(0,0,0,0.4);
+      z-index: 10;
+    }
+
+    /* ─── STAT BLOCK ─── */
+    .stat {
+      padding: 22px 28px;
+      border: 1px solid rgba(196,147,63,0.18);
+      background: rgba(196,147,63,0.04);
+    }
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 52px;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-family: var(--sans);
+      font-size: 9px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ─── MAKER CARD ─── */
+    .maker-quote {
+      padding: 20px 24px;
+      border-left: 3px solid var(--gold);
+      background: rgba(196,147,63,0.04);
+      margin-bottom: 14px;
+    }
+    .maker-name {
+      font-family: var(--sans);
+      font-size: 9px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .maker-text {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--cream);
+    }
+
+    /* ─── ROADMAP ─── */
+    .roadmap-item {
+      display: flex;
+      gap: 24px;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(196,147,63,0.12);
+      align-items: flex-start;
+    }
+    .roadmap-year {
+      font-family: var(--serif);
+      font-size: 38px;
+      font-weight: 300;
+      color: rgba(196,147,63,0.3);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 90px;
+    }
+    .roadmap-year--active { color: var(--gold); }
+    .roadmap-title {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      display: block;
+      margin-bottom: 5px;
+    }
+    .roadmap-body {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+
+<!-- ════════════════════════════════════════════
+     SLIDE 01 — COVER
+════════════════════════════════════════════ -->
+<section data-background-image="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1920&q=90&auto=format&fit=crop" data-background-size="cover" data-background-position="center">
+  <div style="height:100vh; display:flex; flex-direction:column; justify-content:flex-end; padding:72px 80px; background:linear-gradient(to top, rgba(8,6,4,0.96) 0%, rgba(8,6,4,0.5) 55%, rgba(8,6,4,0.15) 100%);">
+
+    <div style="margin-bottom:auto; padding-top:56px;">
+      <span class="label">Digital Transformation Story</span>
+    </div>
+
+    <div>
+      <h1 style="font-size:clamp(4rem,8vw,7rem); font-weight:300; line-height:0.92; margin-bottom:28px; letter-spacing:-0.03em;">
+        Honest<br /><em style="color:var(--gold);">&amp;</em> Rare
+      </h1>
+
+      <hr class="rule" />
+
+      <p style="font-family:var(--sans); font-size:12px; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted); margin-top:18px;">
+        From Vision to Product &nbsp;·&nbsp; 2024 – 2030
+      </p>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:56px; padding-top:24px; border-top:1px solid rgba(196,147,63,0.2);">
+      <span style="font-family:var(--sans); font-size:9px; letter-spacing:0.35em; text-transform:uppercase; color:var(--muted2);">Honest &amp; Rare — Brand &amp; Technology Team</span>
+      <span style="font-family:var(--sans); font-size:9px; letter-spacing:0.35em; text-transform:uppercase; color:var(--muted2);">May 2026</span>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     SLIDE 02 — THE PROBLEM
+════════════════════════════════════════════ -->
+<section>
+  <div style="height:100vh; display:grid; grid-template-columns:1fr 1fr;">
+
+    <!-- Left: text -->
+    <div style="display:flex; flex-direction:column; justify-content:center; padding:80px 60px; background:var(--bg);">
+      <span class="label fragment">The Challenge</span>
+      <h2 class="fragment" style="font-size:clamp(2rem,4.5vw,3.6rem); margin-bottom:28px; line-height:1.05;">
+        Independent makers<br />are invisible.
+      </h2>
+      <hr class="rule fragment" />
+      <p class="fragment" style="font-family:var(--serif); font-size:16px; font-style:italic; line-height:1.7; color:var(--muted); margin:20px 0 32px; max-width:380px;">
+        9,500 exceptional products. 900+ passionate producers. And almost none of them can reach the customers who would love them most.
+      </p>
+      <div class="fragment" style="padding:18px 22px; border-left:3px solid var(--gold); background:rgba(196,147,63,0.05);">
+        <p style="font-family:var(--sans); font-size:9px; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); margin-bottom:8px;">The Amazon Problem</p>
+        <p style="font-family:var(--serif); font-style:italic; font-size:14px; line-height:1.6; color:var(--muted);">Amazon has everything. H&amp;R has exactly what you're looking for — but couldn't find anywhere else.</p>
+      </div>
+    </div>
+
+    <!-- Right: image -->
+    <div style="position:relative; overflow:hidden;">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=90&auto=format&fit=crop" alt="" style="width:100%; height:100%; object-fit:cover; filter:brightness(0.6);" />
+      <div style="position:absolute; inset:0; background:linear-gradient(to right, rgba(8,6,4,0.4) 0%, transparent 60%);"></div>
+      <div style="position:absolute; bottom:40px; left:40px; right:40px;">
+        <p style="font-family:var(--serif); font-style:italic; font-size:15px; line-height:1.6; color:rgba(240,238,234,0.6);">"We make 2,400 bottles a year — by hand. You won't find us in a supermarket. And that's exactly the point."</p>
+        <p style="font-family:var(--sans); font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin-top:10px;">— Shearwater Distillery, Hamburg</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     SLIDE 03 — THE OPPORTUNITY (NUMBERS)
+════════════════════════════════════════════ -->
+<section>
+  <div style="height:100vh; display:flex; flex-direction:column; justify-content:center; padding:80px;">
+    <span class="label fragment">The Opportunity</span>
+    <h2 class="fragment" style="font-size:clamp(2.2rem,5vw,4.2rem); margin-bottom:36px; max-width:640px;">The craft market doesn't have a quality problem.<br /><em style="color:var(--gold);">It has a visibility problem.</em></h2>
+
+    <div class="fragment" style="display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin:8px 0 32px;">
+      <div class="stat">
+        <span class="stat-num">18%</span>
+        <span class="stat-label">Annual growth — European craft & specialty market</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">67%</span>
+        <span class="stat-label">Of specialty product discoveries now happen online</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">900+</span>
+        <span class="stat-label">Independent makers who chose H&amp;R over Amazon</span>
+      </div>
+    </div>
+
+    <p class="fragment" style="font-family:var(--serif); font-style:italic; font-size:17px; line-height:1.65; color:var(--muted); max-width:580px;">
+      The platform that connects these makers with people who actually care — with the editorial depth to make discovery feel like culture, not shopping — doesn't exist yet at scale. <em style="color:var(--cream);">That's Honest &amp; Rare.</em>
+    </p>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     SLIDE 04 — 2030 VISION
+════════════════════════════════════════════ -->
+<section data-background-image="https://images.unsplash.com/photo-1544025162-d76538159ee6?w=1920&q=90&auto=format&fit=crop" data-background-size="cover" data-background-position="center 40%">
+  <div style="height:100vh; display:flex; flex-direction:column; justify-content:center; padding:80px; background:linear-gradient(135deg, rgba(8,6,4,0.92) 0%, rgba(8,6,4,0.6) 50%, rgba(8,6,4,0.3) 100%);">
+
+    <span class="label fragment">2030 Vision</span>
+    <h2 class="fragment" style="font-size:clamp(2.5rem,6.5vw,5.5rem); line-height:0.95; max-width:700px; margin-bottom:36px;">
+      Europe's #1 destination for independent craft.
+    </h2>
+    <hr class="rule fragment" />
+
+    <div class="fragment" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; margin-top:24px; max-width:700px;">
+      <div style="padding:20px 22px; background:rgba(240,238,234,0.05); border-top:2px solid var(--gold);">
+        <span style="font-family:var(--sans); font-size:9px; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:10px;">2025</span>
+        <span style="font-family:var(--serif); font-size:14px; color:var(--cream); line-height:1.5;">Foundation — premium editorial platform. Culture established.</span>
+      </div>
+      <div style="padding:20px 22px; background:rgba(240,238,234,0.04); border-top:2px solid rgba(196,147,63,0.4);">
+        <span style="font-family:var(--sans); font-size:9px; letter-spacing:0.35em; text-transform:uppercase; color:rgba(196,147,63,0.5); display:block; margin-bottom:10px;">2027</span>
+        <span style="font-family:var(--serif); font-size:14px; color:var(--muted); line-height:1.5;">Personalisation — "Your kind of evening." Habit-forming.</span>
+      </div>
+      <div style="padding:20px 22px; background:rgba(240,238,234,0.03); border-top:2px solid rgba(196,147,63,0.2);">
+        <span style="font-family:var(--sans); font-size:9px; letter-spacing:0.35em; text-transform:uppercase; color:rgba(196,147,63,0.35); display:block; margin-bottom:10px;">2030</span>
+        <span style="font-family:var(--serif); font-size:14px; color:var(--muted2); line-height:1.5;">Platform — makers publish directly. Community. Movement.</span>
+      </div>
+    </div>
+
+    <p class="fragment" style="font-family:var(--serif); font-style:italic; font-size:16px; color:var(--muted); margin-top:28px; max-width:540px;">
+      Monocle for craft drinks. Kinfolk for the kitchen.<br />The Infatuation for German craft culture.
+    </p>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     SLIDE 05 — THE DIGITAL TRANSFORMATION
+════════════════════════════════════════════ -->
+<section>
+  <div style="height:100vh; display:grid; grid-template-columns:1fr 1fr; gap:0;">
+
+    <div style="display:flex; flex-direction:column; justify-content:center; padding:80px 60px; background:#0d0b09;">
+      <span class="label fragment">Why Digital Transformation</span>
+      <h2 class="fragment" style="font-size:clamp(1.8rem,4vw,3.2rem); margin-bottom:28px; line-height:1.05;">
+        A market-leading product needed a market-leading presence.
+      </h2>
+      <hr class="rule fragment" />
+      <ul class="fragment" style="list-style:none; padding:0; margin:20px 0 0; display:flex; flex-direction:column; gap:14px;">
+        <li style="display:flex; gap:14px; align-items:flex-start;">
+          <span style="color:var(--gold); font-size:10px; flex-shrink:0; margin-top:4px;">✦</span>
+          <span style="font-family:var(--serif); font-size:15px; color:var(--muted); line-height:1.6;">The existing shop felt like a utility. H&amp;R deserved to feel like a destination.</span>
+        </li>
+        <li style="display:flex; gap:14px; align-items:flex-start;" class="fragment">
+          <span style="color:var(--gold); font-size:10px; flex-shrink:0; margin-top:4px;">✦</span>
+          <span style="font-family:var(--serif); font-size:15px; color:var(--muted); line-height:1.6;">Independent makers need a showcase, not a product listing. Their story <em>is</em> the product.</span>
+        </li>
+        <li style="display:flex; gap:14px; align-items:flex-start;" class="fragment">
+          <span style="color:var(--gold); font-size:10px; flex-shrink:0; margin-top:4px;">✦</span>
+          <span style="font-family:var(--serif); font-size:15px; color:var(--muted); line-height:1.6;">Mobile-first, editorial-first, culture-first. Content earns trust. Trust earns purchases.</span>
+        </li>
+        <li style="display:flex; gap:14px; align-items:flex-start;" class="fragment">
+          <span style="color:var(--gold); font-size:10px; flex-shrink:0; margin-top:4px;">✦</span>
+          <span style="font-family:var(--serif); font-size:15px; color:var(--muted); line-height:1.6;">The German craft market grows 18% annually. Being there early — with the right brand — compounds.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div style="position:relative; overflow:hidden; background:#0a0807;">
+      <img src="https://images.unsplash.com/photo-1436076863939-06870fe779c2?w=900&q=90&auto=format&fit=crop" alt="" style="width:100%; height:100%; object-fit:cover; filter:brightness(0.5) saturate(0.8);" />
+      <div style="position:absolute; inset:0; display:flex; align-items:flex-end; padding:48px;">
+        <div>
+          <div style="width:40px; height:1px; background:var(--gold); margin-bottom:16px;"></div>
+          <p style="font-family:var(--serif); font-weight:300; font-style:italic; font-size:1.6rem; line-height:1.3; color:var(--cream);">A store you visit once.<br />A destination you return to.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     SLIDE 06 — WHAT WE BUILT
+════════════════════════════════════════════ -->
+<section>
+  <div style="height:100vh; display:flex; flex-direction:column; justify-content:center; padding:80px; background:var(--bg);">
+    <span class="label fragment">The Platform</span>
+    <h2 class="fragment" style="font-size:clamp(2rem,4.5vw,3.8rem); margin-bottom:32px; max-width:600px;">Nine rooms.<br /><em style="color:var(--gold);">One living brand.</em></h2>
+    <hr class="rule fragment" />
+
+    <div class="fragment" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:rgba(196,147,63,0.1); margin-top:20px;">
+      <div style="padding:20px 22px; background:var(--bg); border-top:2px solid var(--gold);">
+        <span style="font-family:var(--sans); font-size:9px; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:8px;">Discovery</span>
+        <p style="font-family:var(--serif); font-size:14px; color:var(--cream); line-height:1.5;">Homepage · Bestsellers · Product Detail · Instant Search</p>
+      </div>
+      <div style="padding:20px 22px; background:var(--bg); border-top:2px solid rgba(196,147,63,0.4);">
+        <span style="font-family:var(--sans); font-size:9px; letter-spacing:0.35em; text-transform:uppercase; color:rgba(196,147,63,0.6); display:block; margin-bottom:8px;">Culture</span>
+        <p style="font-family:var(--serif); font-size:14px; color:var(--muted); line-height:1.5;">Lifestyle · Editorial Mosaic · Recipe Gateway · Meet the Maker</p>
+      </div>
+      <div style="padding:20px 22px; background:var(--bg); border-top:2px solid rgba(196,147,63,0.2);">
+        <span style="font-family:var(--sans); font-size:9px; letter-spacing:0.35em; text-transform:uppercase; color:rgba(196,147,63,0.4); display:block; margin-bottom:8px;">Commerce</span>
+        <p style="font-family:var(--serif); font-size:14px; color:var(--muted2); line-height:1.5;">Cart · Checkout (DE) · Order Confirmation · Brand Story</p>
+      </div>
+    </div>
+
+    <p class="fragment" style="font-family:var(--serif); font-style:italic; font-size:15px; color:var(--muted); margin-top:28px;">Stack: React 18 · Vite · Framer Motion · GSAP · Tailwind CSS · Vercel · <span style="color:var(--cream);">Deployed in 14 days.</span></p>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     SLIDE 07 — HOMEPAGE (EDITORIAL ANNOTATION)
+════════════════════════════════════════════ -->
+<section>
+  <div style="height:100vh; display:flex; flex-direction:column; padding:36px 52px 28px; box-sizing:border-box; background:#080604;">
+
+    <!-- Slide header -->
+    <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:28px; flex-shrink:0;">
+      <div>
+        <span class="label" style="margin-bottom:4px;">07 — Homepage</span>
+        <h3 style="font-family:var(--serif); font-weight:300; font-size:1.9rem; color:var(--cream); line-height:1.05; margin:0;">The First Impression</h3>
+      </div>
+      <p style="font-family:var(--sans); font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted2); margin:0;">honest-rare.vercel.app</p>
+    </div>
+
+    <!-- Main annotation area -->
+    <div style="flex:1; position:relative; display:grid; grid-template-columns:200px 1fr 200px; gap:0; min-height:0;">
+
+      <!-- Left cards -->
+      <div style="display:flex; flex-direction:column; justify-content:center; gap:14px; padding-right:10px;">
+        <div class="ann fragment" style="position:relative;">
+          <div class="ann-num">1</div>
+          <div><span class="ann-title">Hero type</span><span class="ann-body">Born Ready Slanted — personality over safety.</span></div>
+          <!-- Line extending right -->
+          <div style="position:absolute; right:-34px; top:50%; width:34px; height:1px; background:rgba(196,147,63,0.5);"></div>
+        </div>
+        <div class="ann fragment" style="position:relative;">
+          <div class="ann-num">3</div>
+          <div><span class="ann-title">Minimal nav</span><span class="ann-body">Transparent first. Content dominates.</span></div>
+          <div style="position:absolute; right:-34px; top:50%; width:34px; height:1px; background:rgba(196,147,63,0.5);"></div>
+        </div>
+      </div>
+
+      <!-- Screenshot — floating, with margin -->
+      <div style="position:relative; margin:0 8px; box-shadow:0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(196,147,63,0.12);">
+        <!-- Browser chrome bar -->
+        <div style="background:#1a1614; height:28px; display:flex; align-items:center; padding:0 12px; gap:6px; flex-shrink:0;">
+          <div style="width:9px;height:9px;border-radius:50%;background:rgba(240,238,234,0.12);"></div>
+          <div style="width:9px;height:9px;border-radius:50%;background:rgba(240,238,234,0.12);"></div>
+          <div style="width:9px;height:9px;border-radius:50%;background:rgba(240,238,234,0.12);"></div>
+          <div style="flex:1; margin:0 12px; background:rgba(240,238,234,0.06); border-radius:3px; height:14px; display:flex; align-items:center; padding:0 8px;">
+            <span style="font-family:var(--sans); font-size:8px; color:rgba(240,238,234,0.3); letter-spacing:0.02em;">honest-rare.vercel.app</span>
+          </div>
+        </div>
+        <!-- Screenshot image -->
+        <div style="position:relative; overflow:hidden; height:calc(100% - 28px);">
+          <img src="deck-assets/homepage.png" alt="Homepage" style="width:100%; height:100%; object-fit:cover; object-position:top center; display:block;" />
+          <!-- Pin dots -->
+          <div class="pin-dot fragment" style="top:15%; left:30%;">1</div>
+          <div class="pin-dot fragment" style="top:45%; left:50%;">2</div>
+          <div class="pin-dot fragment" style="top:7%; left:75%;">3</div>
+          <div class="pin-dot fragment" style="top:70%; left:20%;">4</div>
+        </div>
+      </div>
+
+      <!-- Right cards -->
+      <div style="display:flex; flex-direction:column; justify-content:center; gap:14px; padding-left:10px;">
+        <div class="ann fragment" style="position:relative;">
+          <div style="position:absolute; left:-34px; top:50%; width:34px; height:1px; background:rgba(196,147,63,0.5);"></div>
+          <div class="ann-num">2</div>
+          <div><span class="ann-title">Atmosphere shot</span><span class="ann-body">No bottle on white. Sells a feeling first.</span></div>
+        </div>
+        <div class="ann fragment" style="position:relative;">
+          <div style="position:absolute; left:-34px; top:50%; width:34px; height:1px; background:rgba(196,147,63,0.5);"></div>
+          <div class="ann-num">4</div>
+          <div><span class="ann-title">Product marquee</span><span class="ann-body">Auto-scroll. Freeze on hover. Catalogue breadth without noise.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer caption -->
+    <p class="fragment" style="font-family:var(--serif); font-style:italic; font-size:12px; color:var(--muted2); margin-top:18px; flex-shrink:0; text-align:center; letter-spacing:0.02em;">
+      "The homepage has one job: make the user feel something before they think anything."
+    </p>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     SLIDE 08 — LIFESTYLE PAGE (EDITORIAL ANNOTATION)
+════════════════════════════════════════════ -->
+<section>
+  <div style="height:100vh; display:flex; flex-direction:column; padding:36px 52px 28px; box-sizing:border-box; background:#080604;">
+
+    <!-- Slide header -->
+    <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:28px; flex-shrink:0;">
+      <div>
+        <span class="label" style="margin-bottom:4px;">08 — Lifestyle Page</span>
+        <h3 style="font-family:var(--serif); font-weight:300; font-size:1.9rem; color:var(--cream); line-height:1.05; margin:0;">The Living Room</h3>
+      </div>
+      <p style="font-family:var(--sans); font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted2); margin:0;">honest-rare.vercel.app/lifestyle</p>
+    </div>
+
+    <!-- Main annotation area -->
+    <div style="flex:1; position:relative; display:grid; grid-template-columns:210px 1fr 210px; gap:0; min-height:0;">
+
+      <!-- Left cards -->
+      <div style="display:flex; flex-direction:column; justify-content:center; gap:14px; padding-right:10px;">
+        <div class="ann fragment" style="position:relative;">
+          <div class="ann-num">1</div>
+          <div><span class="ann-title">Identity copy</span><span class="ann-body">"What you bring home, is who you are." — not a tagline. A mirror.</span></div>
+          <div style="position:absolute; right:-34px; top:50%; width:34px; height:1px; background:rgba(196,147,63,0.5);"></div>
+        </div>
+        <div class="ann fragment" style="position:relative;">
+          <div class="ann-num">3</div>
+          <div><span class="ann-title">Cormorant italic</span><span class="ann-body">Slow the eye. This page is not trying to sell yet.</span></div>
+          <div style="position:absolute; right:-34px; top:50%; width:34px; height:1px; background:rgba(196,147,63,0.5);"></div>
+        </div>
+      </div>
+
+      <!-- Screenshot -->
+      <div style="position:relative; margin:0 8px; box-shadow:0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(196,147,63,0.12);">
+        <div style="background:#1a1614; height:28px; display:flex; align-items:center; padding:0 12px; gap:6px;">
+          <div style="width:9px;height:9px;border-radius:50%;background:rgba(240,238,234,0.12);"></div>
+          <div style="width:9px;height:9px;border-radius:50%;background:rgba(240,238,234,0.12);"></div>
+          <div style="width:9px;height:9px;border-radius:50%;background:rgba(240,238,234,0.12);"></div>
+          <div style="flex:1; margin:0 12px; background:rgba(240,238,234,0.06); border-radius:3px; height:14px; display:flex; align-items:center; padding:0 8px;">
+            <span style="font-family:var(--sans); font-size:8px; color:rgba(240,238,234,0.3);">honest-rare.vercel.app/lifestyle</span>
+          </div>
+        </div>
+        <div style="position:relative; overflow:hidden; height:calc(100% - 28px);">
+          <img src="deck-assets/lifestyle-hero.png" alt="Lifestyle" style="width:100%; height:100%; object-fit:cover; object-position:top center; display:block;" />
+          <div class="pin-dot fragment" style="top:10%; left:25%;">1</div>
+          <div class="pin-dot fragment" style="top:40%; left:50%;">2</div>
+          <div class="pin-dot fragment" style="top:55%; left:15%;">3</div>
+          <div class="pin-dot fragment" style="top:4%; right:12%; left:auto;">4</div>
+        </div>
+      </div>
+
+      <!-- Right cards -->
+      <div style="display:flex; flex-direction:column; justify-content:center; gap:14px; padding-left:10px;">
+        <div class="ann fragment" style="position:relative;">
+          <div style="position:absolute; left:-34px; top:50%; width:34px; height:1px; background:rgba(196,147,63,0.5);"></div>
+          <div class="ann-num">2</div>
+          <div><span class="ann-title">Editorial mosaic</span><span class="ann-body">4 cols · 10 cells · 1px gap. Feels like print. Behaves like Instagram Explore.</span></div>
+        </div>
+        <div class="ann fragment" style="position:relative;">
+          <div style="position:absolute; left:-34px; top:50%; width:34px; height:1px; background:rgba(196,147,63,0.5);"></div>
+          <div class="ann-num">4</div>
+          <div><span class="ann-title">Reading progress</span><span class="ann-body">Gold 2px bar. Frames scroll as completion — not infinite.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="fragment" style="font-family:var(--serif); font-style:italic; font-size:12px; color:var(--muted2); margin-top:18px; flex-shrink:0; text-align:center;">
+      "Six rooms. One living editorial. A page visit becomes a journey."
+    </p>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     SLIDE 09 — EDITORIAL MOSAIC
+════════════════════════════════════════════ -->
+<section>
+  <div style="height:100vh; display:grid; grid-template-columns:1fr 1fr;">
+
+    <div style="position:relative; overflow:hidden;">
+      <!-- Mosaic simulation using real images -->
+      <div style="display:grid; grid-template-areas:'bbq beer spirits' 'bbq after wine' 'cocktail cocktail food'; grid-template-columns:1fr 1fr 1fr; grid-template-rows:1fr 1fr 1fr; gap:1px; height:100%; background:rgba(196,147,63,0.1);">
+        <div style="grid-area:bbq; position:relative; overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1544025162-d76538159ee6?w=600&q=80" alt="" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.7);" />
+          <span style="position:absolute;bottom:8px;left:10px;font-family:var(--sans);font-size:7px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);">▶ BBQ</span>
+        </div>
+        <div style="grid-area:beer; position:relative; overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1572577398906-b3124eae8e67?w=400&q=80" alt="" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.65);" />
+        </div>
+        <div style="grid-area:spirits; position:relative; overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1574072626749-6f86e1e8f08a?w=400&q=80" alt="" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);" />
+        </div>
+        <div style="grid-area:after; position:relative; overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1436076863939-06870fe779c2?w=400&q=80" alt="" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.65);" />
+        </div>
+        <div style="grid-area:wine; position:relative; overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=400&q=80" alt="" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);" />
+        </div>
+        <div style="grid-area:cocktail; position:relative; overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=600&q=80" alt="" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.65);" />
+          <span style="position:absolute;bottom:8px;left:10px;font-family:var(--sans);font-size:7px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);">▶ Cocktail</span>
+        </div>
+        <div style="grid-area:food; position:relative; overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80" alt="" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);" />
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; justify-content:center; padding:72px 56px; background:var(--bg);">
+      <span class="label fragment">The Great Hall</span>
+      <h2 class="fragment" style="font-size:clamp(1.8rem,4vw,3.2rem); margin-bottom:20px; line-height:1.05;">The Editorial<br /><em style="color:var(--gold);">Mosaic</em></h2>
+      <hr class="rule fragment" />
+      <p class="fragment" style="font-family:var(--sans); font-size:10px; letter-spacing:0.25em; text-transform:uppercase; color:rgba(196,147,63,0.5); margin:12px 0 20px;">7 cells · 2 video loops · 0px gap · gridTemplateAreas</p>
+
+      <ul class="fragment" style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px;">
+        <li style="display:flex; gap:14px; align-items:flex-start;">
+          <span style="color:var(--gold); font-size:10px; flex-shrink:0; margin-top:3px;">✦</span>
+          <span style="font-family:var(--serif); font-size:14px; color:var(--muted); line-height:1.55;">BBQ fire video anchors the eye. No "Play" button — just atmosphere. The user doesn't decide to watch; they just do.</span>
+        </li>
+        <li style="display:flex; gap:14px; align-items:flex-start;" class="fragment">
+          <span style="color:var(--gold); font-size:10px; flex-shrink:0; margin-top:3px;">✦</span>
+          <span style="font-family:var(--serif); font-size:14px; color:var(--muted); line-height:1.55;">Hover: full overlay animates in — tag, title, description, CTA. The still grid comes alive on interaction.</span>
+        </li>
+        <li style="display:flex; gap:14px; align-items:flex-start;" class="fragment">
+          <span style="color:var(--gold); font-size:10px; flex-shrink:0; margin-top:3px;">✦</span>
+          <span style="font-family:var(--serif); font-size:14px; color:var(--muted); line-height:1.55;">Zero gaps, edge-to-edge. Instagram Explore trained users to scan and discover. We borrow that behaviour, but give it editorial depth.</span>
+        </li>
+      </ul>
+
+      <p class="fragment" style="font-family:var(--serif); font-style:italic; font-size:13px; color:var(--muted); margin-top:24px; padding-top:20px; border-top:1px solid rgba(196,147,63,0.15);">The mosaic is the single most-photographed element when we show the site. It immediately signals: this is not a normal product page.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     SLIDE 10 — MEET THE MAKER
+════════════════════════════════════════════ -->
+<section data-background-image="https://images.unsplash.com/photo-1559526324-593bc073d938?w=1920&q=90&auto=format&fit=crop" data-background-size="cover" data-background-position="center">
+  <div style="height:100vh; display:grid; grid-template-columns:1fr 1fr; background:linear-gradient(to right, rgba(8,6,4,0.96) 40%, rgba(8,6,4,0.55) 100%);">
+
+    <div style="display:flex; flex-direction:column; justify-content:center; padding:80px 60px;">
+      <span class="label fragment">The Differentiator</span>
+      <h2 class="fragment" style="font-size:clamp(2rem,4.5vw,3.6rem); margin-bottom:28px; line-height:1.0;">
+        Not on Amazon.<br /><em style="color:var(--gold);">Only on H&amp;R.</em>
+      </h2>
+      <hr class="rule fragment" />
+      <p class="fragment" style="font-family:var(--serif); font-style:italic; font-size:16px; line-height:1.7; color:var(--muted); margin:20px 0 28px; max-width:420px;">This is what Amazon can't sell you: a story. A face behind the bottle. A reason to care about what you're drinking.</p>
+
+      <div class="fragment">
+        <div class="maker-quote">
+          <span class="maker-name">Feldmann Brauerei · Bamberg · Est. 1887</span>
+          <p class="maker-text">"Four generations. One recipe we refuse to simplify. Algorithms don't recommend us — curious people find us."</p>
+        </div>
+        <div class="maker-quote">
+          <span class="maker-name">Schwarzwald Spirits · Black Forest</span>
+          <p class="maker-text">"Everything we use grows within 20 km of our still. No supply chain. No compromise. Just Black Forest in a bottle."</p>
+        </div>
+      </div>
+    </div>
+
+    <div></div><!-- background shows through right col -->
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     SLIDE 11 — MOBILE SEARCH
+════════════════════════════════════════════ -->
+<section>
+  <div style="height:100vh; display:grid; grid-template-columns:1fr 1fr; gap:0;">
+
+    <div style="display:flex; flex-direction:column; justify-content:center; padding:80px 60px; background:#0d0b09;">
+      <span class="label fragment">Mobile Experience</span>
+      <h2 class="fragment" style="font-size:clamp(2rem,4vw,3.2rem); margin-bottom:28px; line-height:1.05;">Shop in seconds.<br /><em style="color:var(--gold);">Not minutes.</em></h2>
+      <hr class="rule fragment" />
+
+      <div class="fragment" style="display:flex; flex-direction:column; gap:14px; margin-top:20px;">
+        <div class="ann">
+          <div class="ann-num">1</div>
+          <div><span class="ann-title">Search — left side, thumb-reach</span><span class="ann-body">Magnifier icon sits opposite the hamburger. Tap: full-width search panel slides in, keyboard auto-focuses. Finds products by German or English keyword.</span></div>
+        </div>
+        <div class="ann">
+          <div class="ann-num">2</div>
+          <div><span class="ann-title">Scored relevance — real-time</span><span class="ann-body">Name (10pt) → Brand (8pt) → Category (7pt) → Tags (3pt) including German synonyms: "bier", "kaffee", "alkoholfrei".</span></div>
+        </div>
+        <div class="ann">
+          <div class="ann-num">3</div>
+          <div><span class="ann-title">Touch carousel — RAF 0.7px/frame</span><span class="ann-body">requestAnimationFrame loop. Horizontal vs vertical scroll intent detection. 1.3× touch sensitivity. No horizontal overflow.</span></div>
+        </div>
+        <div class="ann">
+          <div class="ann-num">4</div>
+          <div><span class="ann-title">Filter sidebar — full-screen overlay</span><span class="ann-body">On mobile, the filter panel opens as a bottom sheet covering the full screen. Dismisses with swipe-down or tap outside.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; align-items:center; justify-content:center; padding:40px; background:#090706;">
+      <!-- Mobile frame mockup -->
+      <div style="width:220px; border-radius:28px; overflow:hidden; box-shadow:0 32px 80px rgba(0,0,0,0.6); border:1px solid rgba(196,147,63,0.15);">
+        <!-- Status bar -->
+        <div style="background:#0d0b09; padding:10px 20px 6px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-family:var(--sans); font-size:9px; color:var(--cream);">9:41</span>
+          <span style="font-family:var(--sans); font-size:8px; color:var(--cream);">●●●</span>
+        </div>
+        <!-- Nav bar -->
+        <div style="background:#f0eeea; padding:10px 14px; display:flex; align-items:center; justify-content:space-between;">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a1614" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+          </div>
+          <img src="/logo.png" alt="" style="height:14px; object-fit:contain;" />
+          <div style="display:flex; gap:6px; align-items:center;">
+            <span style="font-size:14px; color:#1a1614;">⊡</span>
+            <div style="display:flex; flex-direction:column; gap:2px;">
+              <div style="width:14px; height:1px; background:#1a1614;"></div>
+              <div style="width:14px; height:1px; background:#1a1614;"></div>
+              <div style="width:14px; height:1px; background:#1a1614;"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Search overlay -->
+        <div style="background:#f0eeea; padding:10px 14px; border-bottom:1px solid rgba(26,22,20,0.08);">
+          <div style="background:white; border-bottom:1.5px solid #c4933f; padding:7px 10px; display:flex; gap:8px; align-items:center;">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(26,22,20,0.4)" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+            <span style="font-family:var(--sans); font-size:9px; color:rgba(26,22,20,0.4); letter-spacing:0.03em;">hefeweizen...</span>
+          </div>
+        </div>
+        <!-- Search result -->
+        <div style="background:#f0eeea; padding:10px 14px; display:flex; gap:10px; align-items:center; border-bottom:1px solid rgba(26,22,20,0.05);">
+          <img src="https://images.unsplash.com/photo-1572577398906-b3124eae8e67?w=80&q=70" alt="" style="width:32px; height:38px; object-fit:cover; border-radius:2px; flex-shrink:0;" />
+          <div>
+            <p style="font-family:var(--sans); font-size:7px; letter-spacing:0.25em; text-transform:uppercase; color:#c4933f; margin:0 0 2px;">Craft Beer</p>
+            <p style="font-family:'Cormorant Garamond',Georgia,serif; font-size:12px; color:#1a1614; margin:0;">Hefeweizen</p>
+            <p style="font-family:var(--sans); font-size:8px; color:rgba(26,22,20,0.45); margin:0;">Feldmann Brauerei</p>
+          </div>
+          <p style="font-family:var(--sans); font-size:11px; font-weight:700; color:#1a1614; margin-left:auto;">€2.90</p>
+        </div>
+        <!-- Hero image preview -->
+        <div style="position:relative; height:140px; overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1544025162-d76538159ee6?w=400&q=80" alt="" style="width:100%; height:100%; object-fit:cover; filter:brightness(0.6);" />
+          <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(8,6,4,0.8) 0%, transparent 60%); display:flex; align-items:flex-end; padding:12px;">
+            <p style="font-family:'Cormorant Garamond',Georgia,serif; font-size:13px; color:#f0eeea; line-height:1.2;">Honest &amp;<br /><em style="color:#c4933f;">Rare</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     SLIDE 12 — DESIGN SYSTEM
+════════════════════════════════════════════ -->
+<section>
+  <div style="height:100vh; display:flex; flex-direction:column; justify-content:center; padding:80px; background:var(--bg);">
+    <span class="label fragment">Design System</span>
+    <h2 class="fragment" style="font-size:clamp(2rem,4vw,3.2rem); margin-bottom:32px;">Three typefaces.<br /><em style="color:var(--gold);">One unmistakable voice.</em></h2>
+
+    <div class="fragment" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:rgba(196,147,63,0.1); margin-bottom:28px;">
+      <div style="padding:28px 24px; background:var(--bg); border-top:2px solid var(--gold);">
+        <p style="font-family:'Cormorant Garamond',Georgia,serif; font-size:2rem; font-weight:300; color:var(--cream); margin:0 0 8px; line-height:1;">Cormorant<br />Garamond</p>
+        <p style="font-family:var(--sans); font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin:0 0 8px;">Headlines · Stories</p>
+        <p style="font-family:'Cormorant Garamond',Georgia,serif; font-style:italic; font-size:12px; color:var(--muted);">Editorial warmth. The voice of a connoisseur.</p>
+      </div>
+      <div style="padding:28px 24px; background:var(--bg); border-top:2px solid rgba(196,147,63,0.4);">
+        <p style="font-family:'Helvetica Neue',sans-serif; font-size:0.9rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--cream); margin:0 0 8px; line-height:1.4;">FUTURA<br />LT PRO</p>
+        <p style="font-family:var(--sans); font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:rgba(196,147,63,0.5); margin:0 0 8px;">Labels · Nav · Tags</p>
+        <p style="font-family:'Cormorant Garamond',Georgia,serif; font-style:italic; font-size:12px; color:var(--muted);">German-engineered precision. Modernist clarity.</p>
+      </div>
+      <div style="padding:28px 24px; background:var(--bg); border-top:2px solid rgba(196,147,63,0.2);">
+        <p style="font-family:Georgia,serif; font-style:italic; font-size:1.8rem; font-weight:700; color:var(--cream); margin:0 0 8px; letter-spacing:-0.02em; line-height:1;">Born Ready</p>
+        <p style="font-family:var(--sans); font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:rgba(196,147,63,0.35); margin:0 0 8px;">Campaign · Hero</p>
+        <p style="font-family:'Cormorant Garamond',Georgia,serif; font-style:italic; font-size:12px; color:var(--muted);">Attitude. Character. The voice that breaks the grid.</p>
+      </div>
+    </div>
+
+    <div class="fragment" style="display:flex; gap:16px; align-items:center;">
+      <div style="display:flex; gap:1px;">
+        <div style="width:44px; height:44px; background:#f0eeea; border:1px solid rgba(196,147,63,0.2);"></div>
+        <div style="width:44px; height:44px; background:#1a1614;"></div>
+        <div style="width:44px; height:44px; background:#c4933f;"></div>
+        <div style="width:44px; height:44px; background:#7a9a6e;"></div>
+        <div style="width:44px; height:44px; background:#0d0b09;"></div>
+      </div>
+      <p style="font-family:var(--serif); font-style:italic; font-size:14px; color:var(--muted);">Every color chosen to feel <em style="color:var(--cream);">tactile</em> — like you could touch the material behind it.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     SLIDE 13 — MOTION & CUSTOM CURSOR
+════════════════════════════════════════════ -->
+<section>
+  <div style="height:100vh; display:grid; grid-template-columns:1fr 1fr;">
+
+    <div style="display:flex; flex-direction:column; justify-content:center; padding:80px 60px; background:#0d0b09;">
+      <span class="label fragment">Interaction Design</span>
+      <h2 class="fragment" style="font-size:clamp(1.8rem,4vw,3rem); margin-bottom:28px; line-height:1.05;">Every animation<br /><em style="color:var(--gold);">has a reason.</em></h2>
+      <hr class="rule fragment" />
+
+      <ul class="fragment" style="list-style:none; padding:0; margin:20px 0 0; display:flex; flex-direction:column; gap:12px;">
+        <li style="display:flex; gap:14px; align-items:flex-start;">
+          <span style="color:var(--gold); font-size:10px; flex-shrink:0; margin-top:3px;">✦</span>
+          <span style="font-family:var(--serif); font-size:14px; color:var(--muted); line-height:1.55;"><strong style="color:var(--cream); font-weight:500;">Custom cursor:</strong> 8px dot + 38px ring. mix-blend-mode: difference. Adapts to any background without JS detection.</span>
+        </li>
+        <li style="display:flex; gap:14px; align-items:flex-start;" class="fragment">
+          <span style="color:var(--gold); font-size:10px; flex-shrink:0; margin-top:3px;">✦</span>
+          <span style="font-family:var(--serif); font-size:14px; color:var(--muted); line-height:1.55;"><strong style="color:var(--cream); font-weight:500;">Spring physics everywhere:</strong> [0.16, 1, 0.3, 1] bezier. Fast start, gentle land. Never linear — linear feels mechanical.</span>
+        </li>
+        <li style="display:flex; gap:14px; align-items:flex-start;" class="fragment">
+          <span style="color:var(--gold); font-size:10px; flex-shrink:0; margin-top:3px;">✦</span>
+          <span style="font-family:var(--serif); font-size:14px; color:var(--muted); line-height:1.55;"><strong style="color:var(--cream); font-weight:500;">Scroll-triggered reveals:</strong> useInView once:true. Elements animate in as they enter the viewport — attention earned, not demanded.</span>
+        </li>
+        <li style="display:flex; gap:14px; align-items:flex-start;" class="fragment">
+          <span style="color:var(--gold); font-size:10px; flex-shrink:0; margin-top:3px;">✦</span>
+          <span style="font-family:var(--serif); font-size:14px; color:var(--muted); line-height:1.55;"><strong style="color:var(--cream); font-weight:500;">Background videos — silent loops:</strong> No play button, no interruption. BBQ fire. Cocktail pour. Just atmosphere.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; padding:60px; background:var(--bg); gap:32px;">
+      <!-- Cursor visualization -->
+      <div class="fragment" style="display:flex; flex-direction:column; gap:20px; align-items:center; width:100%;">
+        <span style="font-family:var(--sans); font-size:9px; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold);">The Cursor System</span>
+        <div style="display:flex; align-items:center; gap:24px;">
+          <div style="width:8px; height:8px; background:var(--cream); border-radius:50%;"></div>
+          <span style="font-family:var(--sans); font-size:9px; color:var(--muted);">dot · 8px</span>
+          <div style="width:38px; height:38px; border:1px solid var(--cream); border-radius:50%; opacity:0.5;"></div>
+          <span style="font-family:var(--sans); font-size:9px; color:var(--muted);">ring · 38px</span>
+        </div>
+      </div>
+
+      <div class="fragment" style="width:100%; padding:24px; background:rgba(196,147,63,0.05); border:1px solid rgba(196,147,63,0.15);">
+        <p style="font-family:var(--sans); font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin-bottom:10px;">Why details matter</p>
+        <p style="font-family:var(--serif); font-style:italic; font-size:14px; color:var(--muted); line-height:1.65;">Details like this are invisible when done right. They're only noticed when missing. The cursor is the hand that touches the brand — it should feel considered.</p>
+      </div>
+
+      <div class="fragment" style="width:100%; display:flex; gap:2px;">
+        <div style="flex:1; padding:12px; background:rgba(196,147,63,0.04); text-align:center;">
+          <p style="font-family:var(--sans); font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold);">Framer Motion</p>
+          <p style="font-family:var(--serif); font-size:12px; color:var(--muted); margin-top:4px;">Spring physics</p>
+        </div>
+        <div style="flex:1; padding:12px; background:rgba(196,147,63,0.04); text-align:center;">
+          <p style="font-family:var(--sans); font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:rgba(196,147,63,0.5);">GSAP</p>
+          <p style="font-family:var(--serif); font-size:12px; color:var(--muted); margin-top:4px;">Timeline control</p>
+        </div>
+        <div style="flex:1; padding:12px; background:rgba(196,147,63,0.04); text-align:center;">
+          <p style="font-family:var(--sans); font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:rgba(196,147,63,0.35);">CSS</p>
+          <p style="font-family:var(--serif); font-size:12px; color:var(--muted); margin-top:4px;">blend-mode</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     SLIDE 14 — CONTENT STRATEGY
+════════════════════════════════════════════ -->
+<section data-background-image="https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=1920&q=90&auto=format&fit=crop" data-background-size="cover" data-background-position="center">
+  <div style="height:100vh; display:flex; flex-direction:column; justify-content:center; padding:80px; background:linear-gradient(to right, rgba(8,6,4,0.97) 0%, rgba(8,6,4,0.75) 60%, rgba(8,6,4,0.3) 100%);">
+
+    <span class="label fragment">Content Strategy</span>
+    <h2 class="fragment" style="font-size:clamp(2rem,5vw,4rem); max-width:520px; margin-bottom:28px; line-height:1.0;">Content first.<br /><em style="color:var(--gold);">Commerce second.</em></h2>
+    <hr class="rule fragment" />
+
+    <p class="fragment" style="font-family:var(--serif); font-style:italic; font-size:17px; line-height:1.7; color:var(--cream); max-width:480px; margin:20px 0;">
+      When people trust your taste,<br />they trust your products.
+    </p>
+
+    <div class="fragment" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; max-width:580px; margin-top:8px;">
+      <div style="padding:16px 18px; border:1px solid rgba(196,147,63,0.2); background:rgba(8,6,4,0.7);">
+        <p style="font-family:var(--sans); font-size:9px; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); margin-bottom:8px;">The Loop</p>
+        <p style="font-family:var(--serif); font-size:13px; color:var(--muted); line-height:1.6;">Recipe read → product seen → added to cart → returns next week for another recipe</p>
+      </div>
+      <div style="padding:16px 18px; border:1px solid rgba(196,147,63,0.1); background:rgba(8,6,4,0.7);">
+        <p style="font-family:var(--sans); font-size:9px; letter-spacing:0.35em; text-transform:uppercase; color:rgba(196,147,63,0.5); margin-bottom:8px;">The Benchmark</p>
+        <p style="font-family:var(--serif); font-size:13px; color:var(--muted); line-height:1.6;">Kinfolk proved it with print. The Infatuation proved it with restaurants. H&amp;R proves it with craft.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     SLIDE 15 — ROADMAP
+════════════════════════════════════════════ -->
+<section>
+  <div style="height:100vh; display:grid; grid-template-columns:1fr 1fr;">
+
+    <div style="display:flex; flex-direction:column; justify-content:center; padding:80px 60px; background:var(--bg);">
+      <span class="label fragment">Roadmap</span>
+      <h2 class="fragment" style="font-size:clamp(2rem,4vw,3.2rem); margin-bottom:32px;">2024 –<br /><em style="color:var(--gold);">2030</em></h2>
+
+      <div class="fragment">
+        <div class="roadmap-item">
+          <span class="roadmap-year roadmap-year--active">2024</span>
+          <div>
+            <span class="roadmap-title">Foundation ✓</span>
+            <span class="roadmap-body">Premium editorial platform built. 9 pages, design system, full German localisation, Vercel deployment.</span>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-year roadmap-year--active">2025</span>
+          <div>
+            <span class="roadmap-title">Culture — Live Now</span>
+            <span class="roadmap-body">Lifestyle page, editorial mosaic, Meet the Maker, recipe gateway. The brand lives and breathes.</span>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-year">2026</span>
+          <div>
+            <span class="roadmap-title">Own Photography & Video</span>
+            <span class="roadmap-body">H&amp;R products in real settings. Seasonal video loops for every mosaic cell. No stock, no supplier imagery.</span>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-year">2027</span>
+          <div>
+            <span class="roadmap-title">Personalisation Engine</span>
+            <span class="roadmap-body">"Your kind of evening." Mood filters evolve into preference profiles. Return visits driven by content, not ads.</span>
+          </div>
+        </div>
+        <div class="roadmap-item" style="border:none;">
+          <span class="roadmap-year">2030</span>
+          <div>
+            <span class="roadmap-title">Platform — Movement</span>
+            <span class="roadmap-body">Makers publish directly. Community recipes. Local craft discovery by city. H&amp;R is not a store. It's a movement.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; justify-content:center; padding:80px 56px; background:#0d0b09; border-left:1px solid rgba(196,147,63,0.08);">
+      <p class="fragment" style="font-family:var(--serif); font-weight:300; font-size:clamp(1.4rem,3vw,2.2rem); color:var(--cream); line-height:1.3; margin-bottom:32px;">"We're not building a store. We're building a culture people choose to return to."</p>
+      <hr class="rule fragment" />
+
+      <div class="fragment" style="display:flex; flex-direction:column; gap:12px; margin-top:28px;">
+        <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(196,147,63,0.1);">
+          <span style="font-family:var(--sans); font-size:10px; color:var(--muted); letter-spacing:0.1em;">Immediate Priority</span>
+          <span style="font-family:var(--serif); font-size:13px; color:var(--cream);">Own Photography</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(196,147,63,0.1);">
+          <span style="font-family:var(--sans); font-size:10px; color:var(--muted); letter-spacing:0.1em;">Next Quarter</span>
+          <span style="font-family:var(--serif); font-size:13px; color:var(--cream);">Seasonal Video Loops</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(196,147,63,0.1);">
+          <span style="font-family:var(--sans); font-size:10px; color:var(--muted); letter-spacing:0.1em;">H2 2025</span>
+          <span style="font-family:var(--serif); font-size:13px; color:var(--cream);">Preference Engine MVP</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:12px 0;">
+          <span style="font-family:var(--sans); font-size:10px; color:var(--muted); letter-spacing:0.1em;">2026</span>
+          <span style="font-family:var(--serif); font-size:13px; color:var(--cream);">Maker-Published Content</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     SLIDE 16 — CLOSING
+════════════════════════════════════════════ -->
+<section data-background-image="https://images.unsplash.com/photo-1474722883778-792e7990302f?w=1920&q=90&auto=format&fit=crop" data-background-size="cover" data-background-position="center 35%">
+  <div style="height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; padding:80px; background:linear-gradient(135deg, rgba(8,6,4,0.95) 0%, rgba(8,6,4,0.6) 50%, rgba(8,6,4,0.2) 100%);">
+
+    <span class="label fragment">2030</span>
+
+    <h1 class="fragment" style="font-size:clamp(3rem,8vw,6.5rem); font-weight:300; line-height:0.92; max-width:700px; margin-bottom:36px; letter-spacing:-0.03em;">
+      The future<br />is <em style="color:var(--gold);">independent.</em>
+    </h1>
+
+    <hr class="rule fragment" />
+
+    <p class="fragment" style="font-family:var(--serif); font-style:italic; font-size:17px; line-height:1.7; color:var(--muted); max-width:480px; margin:20px 0 40px;">
+      Nine hundred makers chose craft over scale. Now they need a platform that makes that choice visible — and valuable.
+    </p>
+
+    <div class="fragment" style="display:flex; gap:40px; align-items:center; padding-top:24px; border-top:1px solid rgba(196,147,63,0.2);">
+      <div>
+        <p style="font-family:var(--sans); font-size:9px; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); margin-bottom:6px;">Live Now</p>
+        <p style="font-family:var(--serif); font-size:15px; color:var(--cream);">honest-rare.vercel.app</p>
+      </div>
+      <div style="width:1px; height:32px; background:rgba(196,147,63,0.2);"></div>
+      <div>
+        <p style="font-family:var(--sans); font-size:9px; letter-spacing:0.35em; text-transform:uppercase; color:var(--muted2); margin-bottom:6px;">Contact</p>
+        <p style="font-family:var(--serif); font-size:15px; color:var(--muted);">hello@honestandrare.com</p>
+      </div>
+      <div style="width:1px; height:32px; background:rgba(196,147,63,0.2);"></div>
+      <div>
+        <p style="font-family:var(--sans); font-size:9px; letter-spacing:0.35em; text-transform:uppercase; color:var(--muted2); margin-bottom:6px;">Stack</p>
+        <p style="font-family:var(--serif); font-size:15px; color:var(--muted);">React · Vite · Vercel</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+</div><!-- /.slides -->
+</div><!-- /.reveal -->
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'fade',
+    transitionSpeed: 'default',
+    backgroundTransition: 'fade',
+    progress: true,
+    slideNumber: true,
+    controls: true,
+    controlsLayout: 'bottom-right',
+    touch: true,
+    loop: false,
+    center: false,
+    fragments: true,
+    mouseWheel: false,
+    overview: true,
+    width: 1280,
+    height: 720,
+    margin: 0,
+    minScale: 0.4,
+    maxScale: 1.6,
+  });
+</script>
+</body>
+</html>

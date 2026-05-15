@@ -102,7 +102,7 @@ export default function CinematicHero() {
           ))}
 
           <p className="hero-sub" style={{
-            fontFamily: '"DM Sans", system-ui, sans-serif',
+            fontFamily: '"Futura LT Pro", system-ui, sans-serif',
             fontSize: 13, color: 'rgba(26,22,20,0.45)',
             letterSpacing: '0.06em', lineHeight: 1.8,
             marginTop: '2rem', opacity: 0,
@@ -127,7 +127,7 @@ export default function CinematicHero() {
                alt="Olive grove" style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
           {/* Glass label badge */}
           <div className="glass absolute" style={{ bottom: 14, left: 14, right: 14, padding: '10px 14px', borderRadius: 10 }}>
-            <p style={{ fontFamily:'"DM Sans",system-ui,sans-serif', fontSize:10, letterSpacing:'0.3em', textTransform:'uppercase', color:'rgba(26,22,20,0.5)', marginBottom:2 }}>Estate</p>
+            <p style={{ fontFamily:'"Futura LT Pro",system-ui,sans-serif', fontSize:10, letterSpacing:'0.3em', textTransform:'uppercase', color:'rgba(26,22,20,0.5)', marginBottom:2 }}>Estate</p>
             <p style={{ fontFamily:'"Cormorant Garamond",Georgia,serif', fontWeight:300, fontSize:'1rem', color:'#1a1614' }}>Tuscan Groves</p>
           </div>
         </div>
@@ -140,7 +140,7 @@ export default function CinematicHero() {
           <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&q=85&auto=format&fit=crop"
                alt="Gourmet" style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
           <div className="glass absolute" style={{ top: 14, right: 14, padding: '8px 14px', borderRadius: 10 }}>
-            <p style={{ fontFamily:'"DM Sans",system-ui,sans-serif', fontSize:10, letterSpacing:'0.3em', textTransform:'uppercase', color:'rgba(26,22,20,0.5)' }}>Recipe</p>
+            <p style={{ fontFamily:'"Futura LT Pro",system-ui,sans-serif', fontSize:10, letterSpacing:'0.3em', textTransform:'uppercase', color:'rgba(26,22,20,0.5)' }}>Recipe</p>
           </div>
         </div>
 
@@ -154,7 +154,7 @@ export default function CinematicHero() {
           <BottleSVG size="md" variant="riserva" />
           <div className="glass absolute" style={{ bottom: 14, left: 12, right: 12, padding: '10px 14px', borderRadius: 10 }}>
             <p style={{ fontFamily:'"Cormorant Garamond",Georgia,serif', fontWeight:300, fontSize:'0.95rem', color:'#1a1614' }}>H&amp;R Riserva</p>
-            <p style={{ fontFamily:'"DM Sans",system-ui,sans-serif', fontSize:9, letterSpacing:'0.3em', textTransform:'uppercase', color:'rgba(26,22,20,0.4)', marginTop:2 }}>€89</p>
+            <p style={{ fontFamily:'"Futura LT Pro",system-ui,sans-serif', fontSize:9, letterSpacing:'0.3em', textTransform:'uppercase', color:'rgba(26,22,20,0.4)', marginTop:2 }}>€89</p>
           </div>
         </div>
 
@@ -166,7 +166,7 @@ export default function CinematicHero() {
           <img src="https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=600&q=85&auto=format&fit=crop"
                alt="Ski lodge" style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
           <div className="glass absolute" style={{ bottom: 14, left: 14, right: 14, padding: '10px 14px', borderRadius: 10 }}>
-            <p style={{ fontFamily:'"DM Sans",system-ui,sans-serif', fontSize:10, letterSpacing:'0.3em', textTransform:'uppercase', color:'rgba(26,22,20,0.5)', marginBottom:2 }}>Lifestyle</p>
+            <p style={{ fontFamily:'"Futura LT Pro",system-ui,sans-serif', fontSize:10, letterSpacing:'0.3em', textTransform:'uppercase', color:'rgba(26,22,20,0.5)', marginBottom:2 }}>Lifestyle</p>
             <p style={{ fontFamily:'"Cormorant Garamond",Georgia,serif', fontWeight:300, fontSize:'1rem', color:'#1a1614' }}>Après-Ski Table</p>
           </div>
         </div>
@@ -181,7 +181,7 @@ export default function CinematicHero() {
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
         >
           <span style={{
-            fontFamily: '"DM Sans", system-ui, sans-serif',
+            fontFamily: '"Futura LT Pro", system-ui, sans-serif',
             fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase',
             color: 'rgba(26,22,20,0.3)',
           }}>Scroll</span>

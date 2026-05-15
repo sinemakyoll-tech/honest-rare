@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react'
+import { motion, useScroll, useTransform, useSpring } from 'motion/react'
 import { cn } from '@/lib/utils'
 
 const Swirls = () => (
@@ -18,66 +20,156 @@ const Swirls = () => (
 )
 
 export function FloatingFoodHero({ title, description, className }) {
+  const videoRef   = useRef(null)
+  const sectionRef = useRef(null)
+
+  useEffect(() => {
+    videoRef.current?.play().catch(() => {})
+  }, [])
+
+  /* ── Scroll-driven values ── */
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  })
+
+  const raw = {
+    titleY:        useTransform(scrollYProgress, [0, 1],    ['0%', '-30%']),
+    titleOpacity:  useTransform(scrollYProgress, [0, 0.65], [1, 0]),
+    eyebrowOp:     useTransform(scrollYProgress, [0, 0.35], [1, 0]),
+    descOp:        useTransform(scrollYProgress, [0, 0.45], [1, 0]),
+    ctaOp:         useTransform(scrollYProgress, [0, 0.4],  [1, 0]),
+    videoOp:       useTransform(scrollYProgress, [0, 1],    [0.22, 0.42]),
+    videoScale:    useTransform(scrollYProgress, [0, 1],    [1, 1.12]),
+    scrollCueOp:   useTransform(scrollYProgress, [0, 0.18], [1, 0]),
+    swirlY:        useTransform(scrollYProgress, [0, 1],    ['0%', '18%']),
+  }
+
+  /* Spring-smooth the title for a luxurious feel */
+  const titleY = useSpring(raw.titleY, { stiffness: 80, damping: 20 })
+
   return (
-    <section className={cn(className)} style={{ height: '100vh', position: 'relative', overflow: 'hidden', background: '#f0eeea', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <section
+      ref={sectionRef}
+      className={cn(className)}
+      style={{ height: '100vh', position: 'relative', overflow: 'hidden', background: '#f0eeea', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    >
 
-      {/* Background video */}
-      <video autoPlay muted loop playsInline
+      {/* Background video — scales & brightens on scroll */}
+      <motion.video
+        ref={videoRef} autoPlay muted loop playsInline
         className="absolute inset-0 w-full h-full object-cover z-0"
-        style={{ opacity: 0.22 }}>
+        style={{ opacity: raw.videoOp, scale: raw.videoScale, transformOrigin: 'center' }}
+      >
         <source src="/hero-video.mp4" type="video/mp4" />
-      </video>
+      </motion.video>
 
-      <div className="absolute inset-0 z-[1] pointer-events-none"><Swirls /></div>
+      {/* Decorative swirls — parallax upward */}
+      <motion.div className="absolute inset-0 z-[1] pointer-events-none" style={{ y: raw.swirlY }}>
+        <Swirls />
+      </motion.div>
 
       {/* Text content */}
-      <div className="relative z-10 container mx-auto px-6 text-center max-w-2xl">
-        <p style={{
-          fontFamily: '"Futura LT Pro", system-ui, sans-serif', fontWeight: 700,
-          fontSize: 10, letterSpacing: '0.42em', textTransform: 'uppercase',
-          color: 'rgba(26,22,20,0.35)', marginBottom: '1.5rem',
-        }}>9,500 Independent Products · No Mainstream</p>
+      <motion.div
+        className="relative z-10 container mx-auto px-6 text-center"
+        style={{ maxWidth: 900, y: titleY, opacity: raw.titleOpacity }}
+      >
+        {/* Eyebrow */}
+        <motion.p
+          style={{ opacity: raw.eyebrowOp,
+            fontFamily: '"Futura LT Pro", system-ui, sans-serif', fontWeight: 700,
+            fontSize: 10, letterSpacing: '0.42em', textTransform: 'uppercase',
+            color: 'rgba(26,22,20,0.35)', marginBottom: '1.5rem',
+          }}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          9,500 Independent Products · No Mainstream
+        </motion.p>
 
-        <h1 style={{ marginBottom: '1.75rem', lineHeight: 1 }}>
-          {title.split(',').map((part, i, arr) => (
-            <span key={i} style={{
-              display: 'block',
-              fontFamily: i === 1 ? '"Born Ready Slanted", cursive' : '"Cormorant Garamond", Georgia, serif',
-              fontWeight: 300, fontStyle: 'normal',
-              fontSize: i === 1 ? 'clamp(3.2rem, 7.5vw, 7rem)' : 'clamp(3rem, 7vw, 6.5rem)',
-              letterSpacing: i === 1 ? '0.01em' : '-0.01em',
-              color: i === 1 ? '#c4933f' : '#1a1614',
+        {/* Heading */}
+        <motion.h1
+            style={{ marginBottom: 0, lineHeight: 1.1 }}
+            initial={{ y: '60%', opacity: 0 }}
+            animate={{ y: '0%', opacity: 1 }}
+            transition={{ duration: 1.1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <span style={{
+              fontFamily: '"Born Ready Slanted", cursive',
+              fontWeight: 400, fontStyle: 'normal',
+              fontSize: 'clamp(2.2rem, 5.5vw, 5.5rem)',
+              letterSpacing: '-0.01em', color: '#1a1614',
             }}>
-              {part}{i < arr.length - 1 ? ',' : ''}
+              {title.split(',')[0]}{' '}
             </span>
-          ))}
-        </h1>
+            <span style={{
+              fontFamily: '"Cormorant Garamond", Georgia, serif',
+              fontWeight: 300, fontStyle: 'italic',
+              fontSize: 'clamp(2.2rem, 5.5vw, 5.5rem)',
+              letterSpacing: '0.01em', color: '#1a1614',
+            }}>
+              {title.split(',')[1]}
+            </span>
+          </motion.h1>
 
-        <div style={{ width: 40, height: 1, background: '#c4933f', opacity: 0.6, margin: '0 auto 1.5rem' }} />
+        {/* Divider */}
+        <motion.div
+          style={{ width: 32, height: 1, background: '#c4933f', opacity: 0.5, margin: '2rem auto' }}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.8, delay: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
+        />
 
-        <p style={{
-          fontFamily: '"Futura LT Pro", system-ui, sans-serif', fontWeight: 300,
-          fontSize: '0.9rem', color: 'rgba(26,22,20,0.48)', lineHeight: 1.85, marginBottom: '2.5rem',
-        }}>{description}</p>
+        {/* Description */}
+        <motion.p
+          style={{ opacity: raw.descOp,
+            fontFamily: '"Futura LT Pro", system-ui, sans-serif', fontWeight: 300,
+            fontSize: '0.82rem', color: 'rgba(26,22,20,0.42)', lineHeight: 1.9,
+            marginBottom: '2.5rem', letterSpacing: '0.01em',
+          }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          {description}
+        </motion.p>
 
-        <div className="hero-cta-row" style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
+        {/* CTAs */}
+        <motion.div
+          className="hero-cta-row"
+          style={{ display: 'flex', gap: 16, justifyContent: 'center', opacity: raw.ctaOp }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
           <a href="#collection" className="btn-primary">Shop Now</a>
           <a href="#story" className="btn-ghost">Discover</a>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      {/* Scroll cue */}
-      <div style={{
-        position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, zIndex: 10,
-      }}>
+      {/* Scroll cue — fades as soon as you start scrolling */}
+      <motion.div
+        style={{
+          position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, zIndex: 10,
+          opacity: raw.scrollCueOp,
+        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 1.2 }}
+      >
         <span style={{
           fontFamily: '"Futura LT Pro", system-ui, sans-serif', fontWeight: 700,
           fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase',
           color: 'rgba(26,22,20,0.3)',
         }}>Scroll</span>
-        <div style={{ width: 1, height: 36, background: 'linear-gradient(180deg, rgba(196,147,63,0.5) 0%, transparent 100%)' }} />
-      </div>
+        <motion.div
+          style={{ width: 1, height: 36, background: 'linear-gradient(180deg, rgba(196,147,63,0.5) 0%, transparent 100%)' }}
+          animate={{ scaleY: [1, 0.4, 1], opacity: [0.6, 1, 0.6] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      </motion.div>
     </section>
   )
 }

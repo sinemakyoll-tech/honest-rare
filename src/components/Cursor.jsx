@@ -1,22 +1,5 @@
 import { useEffect, useRef } from 'react'
-
-/* Walk up the DOM to find the nearest element with an actual background color,
-   then return true if it's dark (luminance < 0.42). */
-function isUnderDark(el) {
-  let node = el
-  while (node && node !== document.body) {
-    const bg = window.getComputedStyle(node).backgroundColor
-    if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
-      const m = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/)
-      if (m) {
-        const lum = (0.299 * +m[1] + 0.587 * +m[2] + 0.114 * +m[3]) / 255
-        return lum < 0.42
-      }
-    }
-    node = node.parentElement
-  }
-  return false
-}
+import { createPortal } from 'react-dom'
 
 export default function Cursor() {
   const dotRef  = useRef(null)
@@ -32,9 +15,6 @@ export default function Cursor() {
         dotRef.current.style.left = e.clientX + 'px'
         dotRef.current.style.top  = e.clientY + 'px'
       }
-      const dark = isUnderDark(e.target)
-      dotRef.current?.classList.toggle('on-dark', dark)
-      ringRef.current?.classList.toggle('on-dark', dark)
     }
 
     const animate = () => {
@@ -69,10 +49,11 @@ export default function Cursor() {
     }
   }, [])
 
-  return (
+  return createPortal(
     <>
       <div id="hr-cursor"      ref={dotRef}  />
       <div id="hr-cursor-ring" ref={ringRef} />
-    </>
+    </>,
+    document.body
   )
 }

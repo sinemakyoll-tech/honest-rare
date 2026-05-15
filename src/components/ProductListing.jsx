@@ -1,54 +1,57 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useIsMobile } from '../hooks/useIsMobile'
+import CarouselTrack from './CarouselTrack'
+import { useCart } from '../context/CartContext'
 
 const RECIPES = [
   {
-    id: 1, tag: 'Beer Cocktail', time: '5 min',
-    name: 'Weizen Shandy',
-    desc: 'Feldmann Hefeweizen, fresh lemon juice, a pinch of ginger. Refreshing, cloudless, perfect for summer.',
-    img: 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&q=85&auto=format&fit=crop',
+    id: 1, slug: 'marzen-braised-beef-cheeks', tag: 'Slow Cook', time: '3 h',
+    name: 'Märzen-Braised Beef Cheeks',
+    desc: 'Beef cheeks slow-braised in amber Märzen with thyme and root vegetables. Falls apart. Stays in memory.',
+    img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&q=85&auto=format&fit=crop',
   },
   {
-    id: 2, tag: 'Food Pairing', time: '45 min',
-    name: 'Kellerbier Bread',
-    desc: 'Dense, malty loaf brewed with Kellerbier instead of water. Pairs flawlessly with aged Gouda and salted butter.',
-    img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&q=85&auto=format&fit=crop',
+    id: 2, slug: 'laugenbrezel-beer-mustard', tag: 'Snack', time: '20 min',
+    name: 'Laugenbrezel & Beer Mustard',
+    desc: 'Bavarian soft pretzels finished with coarse salt and served alongside a grain mustard spiked with Helles.',
+    img: '/laugenbrezel-beer-mustard.jpg',
   },
   {
-    id: 3, tag: 'BBQ Glaze', time: '15 min',
-    name: 'Rauchbier Rib Glaze',
-    desc: 'Smoked Märzen reduced with honey, mustard and apple cider vinegar. The only glaze your short ribs will ever need.',
-    img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=85&auto=format&fit=crop',
+    id: 3, slug: 'rauchbier-fondue', tag: 'Cheese Board', time: '10 min',
+    name: 'Rauchbier Fondue',
+    desc: 'Smoked lager melted into Gruyère and Emmental. A fondue that smells like an Alpine hut in late November.',
+    img: 'https://images.unsplash.com/photo-1452195100486-9cc805987862?w=500&q=85&auto=format&fit=crop',
   },
   {
-    id: 4, tag: 'Beer Batter', time: '20 min',
-    name: 'Hell Nr. 1 Fish Batter',
-    desc: 'Ultra-light tempura batter made with ice-cold Helles. Crisp, golden, and gone in seconds.',
-    img: 'https://images.unsplash.com/photo-1519984388953-d2406bc725e1?w=500&q=85&auto=format&fit=crop',
+    id: 4, slug: 'hefeweizen-glazed-salmon', tag: 'Weeknight', time: '30 min',
+    name: 'Hefeweizen-Glazed Salmon',
+    desc: 'Wheat beer reduction with honey and dill brushed over pan-seared salmon. Light, fresh, done in half an hour.',
+    img: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=500&q=85&auto=format&fit=crop',
   },
   {
-    id: 5, tag: 'Dessert', time: '60 min',
-    name: 'Dunkel Chocolate Cake',
-    desc: 'Dark lager deepens the bittersweet chocolate — a cake that belongs at a long table with good company.',
-    img: 'https://images.unsplash.com/photo-1606890658317-7d14490b76fd?w=500&q=85&auto=format&fit=crop',
+    id: 5, slug: 'ipa-pickled-vegetables', tag: 'Fermented', time: '48 h',
+    name: 'IPA-Pickled Vegetables',
+    desc: "Hop-forward brine transforms radishes, fennel and cucumber into something you'll put on everything.",
+    img: '/ipa-pickled-vegetables.jpg',
   },
   {
-    id: 6, tag: 'Cheese Dip', time: '10 min',
-    name: 'IPA Beer Cheese',
-    desc: 'Sharp cheddar, cream cheese, Hopfenwerk IPA and a dash of hot sauce. Best served warm with pretzels.',
-    img: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a318?w=500&q=85&auto=format&fit=crop',
+    id: 6, slug: 'stout-creme-brulee', tag: 'Dessert', time: '40 min',
+    name: 'Stout Crème Brûlée',
+    desc: 'Oatmeal stout steeped into the custard base. Bitter-dark beneath the glass crust. Worth the blowtorch.',
+    img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=500&q=85&auto=format&fit=crop',
   },
   {
-    id: 7, tag: 'Brunch', time: '25 min',
-    name: 'Hefeweizen Pancakes',
-    desc: 'Wheat beer gives the batter a natural lift and a hint of banana. Serve with maple syrup and toasted almonds.',
-    img: 'https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=500&q=85&auto=format&fit=crop',
+    id: 7, slug: 'kellerbier-hash', tag: 'Brunch', time: '25 min',
+    name: 'Kellerbier Hash',
+    desc: 'Crispy potatoes, smoked paprika, a soft egg and a splash of unfiltered Kellerbier in the pan.',
+    img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=500&q=85&auto=format&fit=crop',
   },
   {
-    id: 8, tag: 'Beer Cocktail', time: '3 min',
-    name: 'Dunkel Black Velvet',
-    desc: 'Equal parts Dunkel Reserve and dry sparkling wine — an old Bavarian toast dressed for a modern evening.',
-    img: 'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=500&q=85&auto=format&fit=crop',
+    id: 8, slug: 'dunkel-red-cabbage', tag: 'Winter Table', time: '50 min',
+    name: 'Dunkel Red Cabbage',
+    desc: 'Red cabbage slowly braised with Dunkel, cloves and a strip of orange peel. The side dish that steals the table.',
+    img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=85&auto=format&fit=crop',
   },
 ]
 
@@ -56,58 +59,105 @@ const RECIPES_LOOP = [...RECIPES, ...RECIPES]
 
 function RecipeCard({ r }) {
   return (
-    <a href="#" style={{
-      flexShrink: 0, width: 300, marginRight: 20,
-      background: '#fff', overflow: 'hidden',
-      border: '1px solid rgba(26,22,20,0.07)',
-      textDecoration: 'none', display: 'block',
-      cursor: 'none',
-    }}
+    <Link
+      to={`/recipe/${r.slug}`}
+      style={{
+        flexShrink: 0, width: 280, marginRight: 16,
+        background: '#f8f7f4',
+        textDecoration: 'none', display: 'flex', flexDirection: 'column',
+        cursor: 'none', position: 'relative',
+      }}
       onMouseEnter={e => {
-        e.currentTarget.style.boxShadow = '0 8px 28px rgba(26,22,20,0.1)'
-        e.currentTarget.querySelector('img').style.transform = 'scale(1.05)'
+        e.currentTarget.querySelector('.rc-img').style.transform = 'scale(1.06)'
+        e.currentTarget.querySelector('.rc-rule').style.width = '48px'
+        e.currentTarget.querySelector('.rc-arrow').style.opacity = '1'
+        e.currentTarget.querySelector('.rc-arrow').style.transform = 'translateX(4px)'
       }}
       onMouseLeave={e => {
-        e.currentTarget.style.boxShadow = 'none'
-        e.currentTarget.querySelector('img').style.transform = 'scale(1)'
+        e.currentTarget.querySelector('.rc-img').style.transform = 'scale(1)'
+        e.currentTarget.querySelector('.rc-rule').style.width = '24px'
+        e.currentTarget.querySelector('.rc-arrow').style.opacity = '0'
+        e.currentTarget.querySelector('.rc-arrow').style.transform = 'translateX(0)'
       }}
     >
       {/* Image */}
-      <div style={{ height: 180, overflow: 'hidden', position: 'relative' }}>
-        <img src={r.img} alt={r.name} style={{
-          width: '100%', height: '100%', objectFit: 'cover', display: 'block',
-          transition: 'transform 0.5s ease',
+      <div style={{ height: 220, overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
+        <img
+          className="rc-img"
+          src={r.img} alt={r.name}
+          style={{
+            width: '100%', height: '100%', objectFit: 'cover', display: 'block',
+            transition: 'transform 0.7s cubic-bezier(0.16,1,0.3,1)',
+          }}
+        />
+        {/* Dark gradient at bottom */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to top, rgba(26,22,20,0.45) 0%, transparent 55%)',
+          pointerEvents: 'none',
         }} />
+        {/* Time badge — bottom left, elegant */}
         <span style={{
-          position: 'absolute', top: 10, left: 10,
-          background: 'rgba(26,22,20,0.78)', color: '#f0eeea',
+          position: 'absolute', bottom: 14, left: 16,
           fontFamily: '"Futura LT Pro", system-ui, sans-serif',
-          fontSize: 8, fontWeight: 700, letterSpacing: '0.28em',
-          textTransform: 'uppercase', padding: '4px 10px',
-        }}>{r.tag}</span>
-        <span style={{
-          position: 'absolute', top: 10, right: 10,
-          background: 'rgba(196,147,63,0.9)', color: '#fff',
-          fontFamily: '"Futura LT Pro", system-ui, sans-serif',
-          fontSize: 8, fontWeight: 700, letterSpacing: '0.2em',
-          padding: '4px 8px',
+          fontSize: 8, fontWeight: 700, letterSpacing: '0.38em',
+          textTransform: 'uppercase', color: 'rgba(240,238,234,0.75)',
         }}>{r.time}</span>
       </div>
 
       {/* Content */}
-      <div style={{ padding: '14px 16px 18px' }}>
+      <div style={{ padding: '20px 20px 22px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+        {/* Tag + gold rule row */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+          <span style={{
+            fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+            fontSize: 8, fontWeight: 700, letterSpacing: '0.42em',
+            textTransform: 'uppercase', color: '#c4933f',
+          }}>{r.tag}</span>
+          <span
+            className="rc-rule"
+            style={{
+              display: 'block', height: 1, width: 24,
+              background: 'rgba(196,147,63,0.45)',
+              transition: 'width 0.4s cubic-bezier(0.16,1,0.3,1)',
+              flexShrink: 0,
+            }}
+          />
+        </div>
+
         <h4 style={{
           fontFamily: '"Cormorant Garamond", Georgia, serif',
-          fontSize: '1.2rem', fontWeight: 400, color: '#1a1614',
-          marginBottom: 8, lineHeight: 1.2,
+          fontSize: 'clamp(1.15rem, 1.6vw, 1.45rem)',
+          fontWeight: 300, color: '#1a1614',
+          lineHeight: 1.15, marginBottom: 10,
+          letterSpacing: '0.01em',
         }}>{r.name}</h4>
+
         <p style={{
           fontFamily: '"Futura LT Pro", system-ui, sans-serif',
           fontSize: 10, fontWeight: 300,
-          color: 'rgba(26,22,20,0.5)', lineHeight: 1.7,
+          color: 'rgba(26,22,20,0.45)', lineHeight: 1.8,
+          flex: 1,
         }}>{r.desc}</p>
+
+        {/* Read cue */}
+        <div style={{ marginTop: 18, display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{
+            display: 'block', width: 20, height: 1,
+            background: 'rgba(26,22,20,0.15)',
+          }} />
+          <span
+            className="rc-arrow"
+            style={{
+              fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+              fontSize: 8, letterSpacing: '0.32em', textTransform: 'uppercase',
+              color: '#c4933f', opacity: 0,
+              transition: 'opacity 0.3s, transform 0.3s',
+            }}
+          >Read →</span>
+        </div>
       </div>
-    </a>
+    </Link>
   )
 }
 
@@ -295,6 +345,7 @@ function FilterAccordion({ filter, checked, onToggleOpen, onToggleOption }) {
 function ProductCard({ p }) {
   const [wished, setWished] = useState(false)
   const [hovered, setHovered] = useState(false)
+  const { addItem } = useCart()
 
   const ibuPct = Math.min(p.ibu / 80, 1) * 100
 
@@ -497,25 +548,121 @@ function ProductCard({ p }) {
         </div>
 
         {/* Add to cart */}
-        <button style={{
-          marginTop: 14, width: '100%',
-          background: hovered ? p.accent : 'transparent',
-          border: `1px solid ${p.accent}`,
-          color: hovered ? '#f0eeea' : p.accent,
-          fontFamily: '"Futura LT Pro", system-ui, sans-serif',
-          fontSize: 9, fontWeight: 700, letterSpacing: '0.3em',
-          textTransform: 'uppercase', padding: '12px 0',
-          cursor: 'pointer',
-          transition: 'background 0.25s ease, color 0.25s ease',
-        }}>Add to Cart</button>
+        <button
+          onClick={() => addItem({
+            id: p.id,
+            name: p.name,
+            price: parseFloat(String(p.price).replace(/[^0-9.]/g, '')),
+            img: p.img,
+          }, 1)}
+          style={{
+            marginTop: 14, width: '100%',
+            background: hovered ? p.accent : 'transparent',
+            border: `1px solid ${p.accent}`,
+            color: hovered ? '#f0eeea' : p.accent,
+            fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+            fontSize: 9, fontWeight: 700, letterSpacing: '0.3em',
+            textTransform: 'uppercase', padding: '12px 0',
+            cursor: 'none',
+            transition: 'background 0.25s ease, color 0.25s ease',
+          }}>Add to Cart</button>
       </div>
     </div>
   )
 }
 
-export function RecipeCarousel() {
-  const innerRef = useRef(null)
+const COCKTAILS = [
+  {
+    id: 1, slug: 'negroni-bianco', tag: 'Aperitivo', time: '2 min',
+    name: 'Negroni Bianco',
+    desc: 'Dry gin, blanc vermouth, Suze gentian. Stirred over a single large cube. Bitter, floral, unbothered.',
+    img: 'https://images.unsplash.com/photo-1527761939622-933c972cb703?w=500&q=85&auto=format&fit=crop',
+  },
+  {
+    id: 2, slug: 'mezcal-old-fashioned', tag: 'Digestivo', time: '3 min',
+    name: 'Mezcal Old Fashioned',
+    desc: 'Artisan Oaxacan mezcal, agave syrup, Angostura. Smoke, vanilla and a long warm finish.',
+    img: 'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=500&q=85&auto=format&fit=crop',
+  },
+  {
+    id: 3, slug: 'elderflower-gin-tonic', tag: 'Long Drink', time: '5 min',
+    name: 'Elderflower Gin Tonic',
+    desc: 'Small-batch London dry gin, Fever-Tree Mediterranean tonic, elderflower cordial, cucumber ribbon.',
+    img: 'https://images.unsplash.com/photo-1551751299-1b51cab2694c?w=500&q=85&auto=format&fit=crop',
+  },
+  {
+    id: 4, slug: 'highland-neat', tag: 'Whisky Ritual', time: '1 min',
+    name: 'Highland Neat',
+    desc: 'Single malt poured at 20°C, no ice, a few drops of still water to open the nose. Nothing more needed.',
+    img: 'https://images.unsplash.com/photo-1527281400683-1aae777175f8?w=500&q=85&auto=format&fit=crop',
+  },
+  {
+    id: 5, slug: 'amaro-spritz', tag: 'Low ABV', time: '4 min',
+    name: 'Amaro Spritz',
+    desc: 'Bitter alpine amaro, Prosecco Superiore, blood orange. Serve in a wide wine glass with ice.',
+    img: 'https://images.unsplash.com/photo-1560508179-b2c9a3f8e92b?w=500&q=85&auto=format&fit=crop',
+  },
+  {
+    id: 6, slug: 'black-manhattan', tag: 'Stirred', time: '3 min',
+    name: 'Black Manhattan',
+    desc: 'Rye whiskey, Averna amaro, Angostura and orange bitters. Darker and more complex than the original.',
+    img: 'https://images.unsplash.com/photo-1546171753-97d7676e4602?w=500&q=85&auto=format&fit=crop',
+  },
+  {
+    id: 7, slug: 'shochu-highball', tag: 'Highball', time: '2 min',
+    name: 'Shochu Highball',
+    desc: 'Japanese barley shochu, chilled sparkling water 1:3, yuzu twist. The Tokyo answer to the gin tonic.',
+    img: 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&q=85&auto=format&fit=crop',
+  },
+  {
+    id: 8, slug: 'rhum-agricole-sour', tag: 'Rum Ritual', time: '5 min',
+    name: 'Rhum Agricole Sour',
+    desc: 'Martinique agricole blanc, fresh lime, cane syrup, egg white. Grassy, tart, silky foam on top.',
+    img: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=500&q=85&auto=format&fit=crop',
+  },
+]
 
+const COCKTAILS_LOOP = [...COCKTAILS, ...COCKTAILS]
+
+export function CocktailCarousel() {
+  return (
+    <div style={{
+      marginTop: 72,
+      borderTop: '1px solid rgba(26,22,20,0.08)',
+      paddingTop: 48,
+    }}>
+      {/* Header */}
+      <div style={{ marginBottom: 28, display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+        <div>
+          <p style={{
+            fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+            fontSize: 9, fontWeight: 700, letterSpacing: '0.45em',
+            textTransform: 'uppercase', color: '#c4933f', marginBottom: 8,
+          }}>Cocktails & Spirits</p>
+          <h3 style={{
+            fontFamily: '"Cormorant Garamond", Georgia, serif',
+            fontWeight: 300, fontSize: 'clamp(1.8rem, 3vw, 2.8rem)',
+            color: '#1a1614', lineHeight: 1,
+          }}>From the Bar</h3>
+        </div>
+        <a href="#" style={{
+          fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+          fontSize: 9, fontWeight: 700, letterSpacing: '0.3em',
+          textTransform: 'uppercase', color: '#1a1614',
+          textDecoration: 'none', borderBottom: '1px solid rgba(26,22,20,0.3)',
+          paddingBottom: 2, cursor: 'none',
+        }}>All Cocktails</a>
+      </div>
+
+      {/* Scrolling strip */}
+      <CarouselTrack duration={52} step={900} paddingLeft={40} style={{ margin: '0 -40px' }}>
+        {COCKTAILS_LOOP.map((r, i) => <RecipeCard key={i} r={r} />)}
+      </CarouselTrack>
+    </div>
+  )
+}
+
+export function RecipeCarousel() {
   return (
     <div style={{
       marginTop: 72,
@@ -546,19 +693,9 @@ export function RecipeCarousel() {
       </div>
 
       {/* Scrolling strip */}
-      <div
-        className="recipe-strip" style={{ overflow: 'hidden', cursor: 'none', margin: '0 -40px' }}
-        onMouseEnter={() => { if (innerRef.current) innerRef.current.style.animationPlayState = 'paused' }}
-        onMouseLeave={() => { if (innerRef.current) innerRef.current.style.animationPlayState = 'running' }}
-      >
-        <div
-          ref={innerRef}
-          className="marquee-inner"
-          style={{ display: 'flex', alignItems: 'stretch', paddingLeft: 40, animationDuration: '48s' }}
-        >
-          {RECIPES_LOOP.map((r, i) => <RecipeCard key={i} r={r} />)}
-        </div>
-      </div>
+      <CarouselTrack duration={48} step={900} paddingLeft={40} style={{ margin: '0 -40px' }}>
+        {RECIPES_LOOP.map((r, i) => <RecipeCard key={i} r={r} />)}
+      </CarouselTrack>
     </div>
   )
 }

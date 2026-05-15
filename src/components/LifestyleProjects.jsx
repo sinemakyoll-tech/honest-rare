@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView, useScroll, useTransform } from 'motion/react'
+import { motion, useInView, AnimatePresence } from 'motion/react'
 import RainbowGlassButton from './RainbowGlassButton'
 
 const PROJECTS = [
@@ -57,73 +57,105 @@ const PROJECTS = [
   },
 ]
 
-/* ── Card stack: card-shuffle fan interaction ── */
-function CardStack({ cards }) {
-  const [fanned, setFanned] = useState(false)
+/* ── Card stack — cream editorial cards ── */
+function CardStack({ cards, flip = false }) {
+  const [hovered, setHovered] = useState(false)
+  const [open, setOpen] = useState(false)
 
   const stackPose = [
-    { rotate: -8, x: -10, y: 8,  zIndex: 1 },
-    { rotate:  2, x:   4, y: 2,  zIndex: 2 },
-    { rotate: 11, x:  14, y: -3, zIndex: 3 },
+    { rotate: -8,  x: -10, y:   8, scale: 1,    zIndex: 1 },
+    { rotate:  2,  x:   4, y:   2, scale: 1,    zIndex: 2 },
+    { rotate: 11,  x:  14, y:  -3, scale: 1,    zIndex: 3 },
   ]
   const fanPose = [
-    { rotate: -18, x: -195, y: 28, zIndex: 2 },
-    { rotate:   0, x:    0, y: -18, zIndex: 3 },
-    { rotate:  18, x:  195, y: 28, zIndex: 2 },
+    { rotate: -18, x: -185, y:  28, scale: 1,   zIndex: 2 },
+    { rotate:   0, x:    0, y: -18, scale: 1,   zIndex: 3 },
+    { rotate:  18, x:  185, y:  28, scale: 1,   zIndex: 2 },
   ]
+  const openPoseLeft = [
+    { rotate: -2, x: -240, y:  8, scale: 0.88, zIndex: 1 },
+    { rotate:  0, x:  -30, y: -8, scale: 0.88, zIndex: 3 },
+    { rotate:  2, x:  180, y:  8, scale: 0.88, zIndex: 1 },
+  ]
+  const openPoseRight = [
+    { rotate: -2, x: -180, y:  8, scale: 0.88, zIndex: 1 },
+    { rotate:  0, x:   30, y: -8, scale: 0.88, zIndex: 3 },
+    { rotate:  2, x:  240, y:  8, scale: 0.88, zIndex: 1 },
+  ]
+  const openPose = flip ? openPoseLeft : openPoseRight
+
+  const getPose = (i) => {
+    if (open)    return openPose[i]
+    if (hovered) return fanPose[i]
+    return stackPose[i]
+  }
 
   return (
     <div
-      style={{ position: 'relative', width: 260, height: 340, cursor: 'crosshair' }}
-      onMouseEnter={() => setFanned(true)}
-      onMouseLeave={() => setFanned(false)}
+      style={{ position: 'relative', width: 260, height: 380, overflow: 'visible', cursor: 'none' }}
+      onMouseEnter={() => { if (!open) setHovered(true) }}
+      onMouseLeave={() => setHovered(false)}
+      onClick={() => { setOpen(o => !o); setHovered(false) }}
     >
       {cards.map((card, i) => {
-        const pose = fanned ? fanPose[i] : stackPose[i]
+        const pose = getPose(i)
         return (
           <motion.div
             key={i}
-            className="absolute glass"
             style={{
-              width: 242, height: 312,
-              padding: '28px 26px',
+              position: 'absolute',
+              width: 252, height: 358,
+              padding: '24px 22px',
               left: '50%', top: '50%',
-              marginLeft: -121, marginTop: -156,
+              marginLeft: -126, marginTop: -179,
               display: 'flex', flexDirection: 'column',
               zIndex: pose.zIndex,
+              background: '#f0eeea',
+              border: '1px solid rgba(196,147,63,0.22)',
+              boxShadow: open
+                ? '0 24px 80px rgba(0,0,0,0.45)'
+                : '0 16px 56px rgba(0,0,0,0.38)',
             }}
-            animate={{ rotate: pose.rotate, x: pose.x, y: pose.y }}
-            transition={{ type: 'spring', stiffness: 255, damping: 26, mass: 0.85 }}
-            whileHover={fanned ? {
-              scale: 1.05, y: pose.y - 14,
+            animate={{ rotate: pose.rotate, x: pose.x, y: pose.y, scale: pose.scale }}
+            transition={{ type: 'spring', stiffness: 240, damping: 28, mass: 0.9 }}
+            whileHover={open ? {
+              scale: pose.scale * 1.04, y: pose.y - 10,
               transition: { type: 'spring', stiffness: 420, damping: 32 },
             } : {}}
           >
+            {/* Gold top rule */}
+            <div style={{ width: 24, height: 1, background: '#c4933f', marginBottom: 14, opacity: 0.6 }} />
+
             <p style={{
-              fontFamily: '"DM Sans", system-ui, sans-serif',
-              fontSize: 9, letterSpacing: '0.45em', textTransform: 'uppercase',
-              color: '#c4933f', marginBottom: 20,
-            }}>
-              {card.head}
-            </p>
+              fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+              fontSize: 7, letterSpacing: '0.45em', textTransform: 'uppercase',
+              color: '#c4933f', marginBottom: 14,
+            }}>{card.head}</p>
+
             <div style={{
               fontFamily: '"Cormorant Garamond", Georgia, serif',
-              fontWeight: 300, fontSize: '1.1rem', lineHeight: 1.55,
-              color: 'rgba(26,22,20,0.85)',
+              fontWeight: 300, fontSize: '0.88rem', lineHeight: 1.75,
+              color: '#1a1614',
+              flex: 1,
             }}>
               {card.body.split('\n').map((line, j) => (
-                <span key={j} style={{ display: 'block' }}>{line}</span>
+                <span key={j} style={{ display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{line}</span>
               ))}
             </div>
-            {i === 2 && !fanned && (
-              <div style={{
-                marginTop: 'auto',
-                fontFamily: '"DM Sans", system-ui, sans-serif',
-                fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase',
-                color: 'rgba(26,22,20,0.2)', textAlign: 'center',
-              }}>
-                hover
-              </div>
+
+            {i === 2 && !hovered && !open && (
+              <p style={{
+                fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+                fontSize: 7, letterSpacing: '0.45em', textTransform: 'uppercase',
+                color: 'rgba(26,22,20,0.18)', textAlign: 'center', margin: 0,
+              }}>hover · click</p>
+            )}
+            {i === 1 && open && (
+              <p style={{
+                fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+                fontSize: 7, letterSpacing: '0.45em', textTransform: 'uppercase',
+                color: 'rgba(26,22,20,0.18)', textAlign: 'center', margin: 0,
+              }}>click to close</p>
             )}
           </motion.div>
         )
@@ -132,82 +164,99 @@ function CardStack({ cards }) {
   )
 }
 
-/* ── Single full-viewport panel ── */
+/* ── Full-viewport panel — clean geometric split ── */
 function ProjectPanel({ project }) {
-  const ref    = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-15%' })
-
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const bgY = useTransform(scrollYProgress, [0, 1], ['-8%', '8%'])
-
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-8%' })
   const isFlip = project.flip
 
   return (
-    <div ref={ref} className="relative overflow-hidden" style={{ minHeight: '100vh' }}>
+    <div ref={ref} style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden', background: project.fallback }}>
 
-      {/* Parallax background layers */}
-      <motion.div
-        className="absolute inset-0"
-        style={{ y: bgY, scale: 1.22, transformOrigin: 'center' }}
-      >
-        {/* Color fallback */}
-        <div style={{ position: 'absolute', inset: 0, backgroundColor: project.fallback }} />
-        {/* Unsplash image */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: `url("${project.image}")`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }} />
-      </motion.div>
-
-      {/* Directional gradient overlay */}
-      <div className="absolute inset-0" style={{
-        background: isFlip
-          ? 'linear-gradient(270deg, rgba(7,6,10,0.94) 0%, rgba(7,6,10,0.72) 45%, rgba(7,6,10,0.28) 100%)'
-          : 'linear-gradient(90deg,  rgba(7,6,10,0.94) 0%, rgba(7,6,10,0.72) 45%, rgba(7,6,10,0.28) 100%)',
+      {/* Image — only in its 56% visible area, so backgroundPosition: center is accurate */}
+      <div style={{
+        position: 'absolute', top: 0, bottom: 0,
+        [isFlip ? 'left' : 'right']: 0,
+        width: '56%',
+        backgroundImage: `url("${project.image}")`,
+        backgroundSize: 'cover', backgroundPosition: 'center',
+        zIndex: 0,
       }} />
 
-      {/* Top meta bar */}
-      <div
-        className="absolute top-8 left-10 right-10 flex justify-between items-center"
-        style={{ borderBottom: '1px solid rgba(212,184,150,0.08)', paddingBottom: 10 }}
-      >
-        <span style={{
-          fontFamily: '"DM Sans", system-ui, sans-serif',
-          fontSize: 9, letterSpacing: '0.4em', textTransform: 'uppercase',
-          color: 'rgba(212,184,150,0.5)',
-        }}>
-          {project.tag}
-        </span>
+      {/* Thin edge vignette blending image into dark panel */}
+      <div style={{
+        position: 'absolute', top: 0, bottom: 0,
+        [isFlip ? 'right' : 'left']: '44%',
+        width: 100,
+        background: isFlip
+          ? 'linear-gradient(to left, rgba(10,8,6,0.9) 0%, transparent 100%)'
+          : 'linear-gradient(to right, rgba(10,8,6,0.9) 0%, transparent 100%)',
+        zIndex: 1,
+      }} />
+
+      {/* Solid dark text panel */}
+      <div style={{
+        position: 'absolute', top: 0, bottom: 0,
+        [isFlip ? 'right' : 'left']: 0,
+        width: '44%',
+        background: '#0d0b09',
+        zIndex: 2,
+        overflow: 'hidden',
+      }}>
+        {/* Ghost number — architectural decoration */}
+        <div style={{
+          position: 'absolute',
+          bottom: -60,
+          [isFlip ? 'left' : 'right']: -24,
+          fontFamily: '"Cormorant Garamond", Georgia, serif',
+          fontSize: 'clamp(9rem, 18vw, 18rem)', fontWeight: 300,
+          color: 'rgba(240,238,234,0.04)', lineHeight: 1,
+          userSelect: 'none', letterSpacing: '-0.06em', pointerEvents: 'none',
+        }}>{project.num}</div>
       </div>
 
-      {/* Main flex content */}
-      <div
-        className={`panel-inner relative z-10 flex ${isFlip ? 'flex-row-reverse' : 'flex-row'} items-center justify-between`}
-        style={{
-          minHeight: '100vh',
-          padding: 'clamp(5rem, 10vw, 8rem) clamp(2.5rem, 8vw, 8rem)',
-          gap: 'clamp(2rem, 5vw, 6rem)',
-        }}
-      >
-        {/* Text content — unroll reveal */}
-        <div className="panel-text" style={{ flex: 1, maxWidth: 560, paddingTop: '2rem', paddingBottom: '2rem' }}>
+      {/* Content layer */}
+      <div style={{
+        position: 'relative', zIndex: 3,
+        display: 'flex',
+        flexDirection: isFlip ? 'row-reverse' : 'row',
+        minHeight: '100vh',
+        alignItems: 'stretch',
+      }}>
+        {/* Text panel */}
+        <div style={{
+          width: '44%', flexShrink: 0,
+          padding: 'clamp(5rem, 9vw, 7.5rem) clamp(2.5rem, 5vw, 4.5rem)',
+          display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        }}>
+          {/* Meta line */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.7 }}
+            style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 'clamp(2rem, 4vw, 3.5rem)' }}
+          >
+            <span style={{
+              fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+              fontSize: 9, letterSpacing: '0.5em',
+              color: '#c4933f',
+            }}>{project.num}</span>
+            <div style={{ width: 48, height: 1, background: 'linear-gradient(90deg, rgba(196,147,63,0.6), transparent)' }} />
+            <span style={{
+              fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+              fontSize: 8, letterSpacing: '0.38em', textTransform: 'uppercase',
+              color: 'rgba(212,184,150,0.38)',
+            }}>{project.tag}</span>
+          </motion.div>
 
-          {/* Giant title — line-by-line unroll */}
-          <h2 style={{
-            fontFamily: '"Cormorant Garamond", Georgia, serif',
-            fontWeight: 300, lineHeight: 0.92,
-            fontSize: 'clamp(3.2rem, 7.5vw, 8rem)',
-            color: '#f0e8d8', marginBottom: '1.75rem',
-          }}>
+          {/* Title */}
+          <h2 style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontWeight: 300, lineHeight: 0.9, fontSize: 'clamp(3.2rem, 7vw, 7.5rem)', color: '#f0e8d8', margin: '0 0 clamp(1.4rem, 2.5vw, 2rem)', whiteSpace: 'pre-line' }}>
             {project.title.split('\n').map((line, i) => (
               <div key={i} style={{ overflow: 'hidden' }}>
-                <motion.span
-                  style={{ display: 'block' }}
+                <motion.span style={{ display: 'block' }}
                   initial={{ y: '110%' }}
                   animate={inView ? { y: '0%' } : {}}
-                  transition={{ duration: 1.05, delay: 0.08 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 1.05, delay: 0.1 + i * 0.14, ease: [0.16, 1, 0.3, 1] }}
                 >
                   {i === 1
                     ? <em style={{ fontStyle: 'italic', color: '#d4b896' }}>{line}</em>
@@ -220,59 +269,49 @@ function ProjectPanel({ project }) {
 
           {/* Subtitle */}
           <motion.p
-            style={{
-              fontFamily: '"DM Sans", system-ui, sans-serif',
-              fontSize: 10, letterSpacing: '0.42em', textTransform: 'uppercase',
-              color: 'rgba(212,184,150,0.55)', marginBottom: '2rem',
-            }}
             initial={{ opacity: 0, y: 10 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.38 }}
-          >
-            {project.subtitle}
-          </motion.p>
+            transition={{ duration: 0.7, delay: 0.36 }}
+            style={{
+              fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+              fontSize: 9, letterSpacing: '0.38em', textTransform: 'uppercase',
+              color: 'rgba(212,184,150,0.5)', margin: '0 0 clamp(1.4rem, 2.5vw, 2rem)',
+            }}
+          >{project.subtitle}</motion.p>
 
           {/* Gold rule */}
           <motion.span
-            style={{
-              display: 'block', width: 48, height: 1,
-              background: 'rgba(212,184,150,0.5)',
-              marginBottom: '2rem',
-              transformOrigin: 'left',
-            }}
-            initial={{ scaleX: 0 }}
-            animate={inView ? { scaleX: 1 } : {}}
+            initial={{ scaleX: 0 }} animate={inView ? { scaleX: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.44 }}
+            style={{ display: 'block', width: 64, height: 1, background: 'linear-gradient(90deg, rgba(196,147,63,0.85) 0%, rgba(196,147,63,0.2) 70%, transparent 100%)', transformOrigin: 'left', marginBottom: 'clamp(1.4rem, 2.5vw, 2rem)' }}
           />
 
           {/* Description */}
           <motion.p
-            style={{
-              fontFamily: '"DM Sans", system-ui, sans-serif',
-              fontSize: '0.93rem', color: 'rgba(240,232,216,0.42)',
-              lineHeight: 1.85, maxWidth: '38ch', marginBottom: '3rem',
-            }}
             initial={{ opacity: 0, y: 14 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.85, delay: 0.54 }}
-          >
-            {project.desc}
-          </motion.p>
+            transition={{ duration: 0.85, delay: 0.52 }}
+            style={{
+              fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+              fontSize: '0.9rem', color: 'rgba(240,232,216,0.38)',
+              lineHeight: 1.9, maxWidth: '36ch', margin: '0 0 clamp(2.5rem, 4vw, 3.5rem)',
+            }}
+          >{project.desc}</motion.p>
 
           {/* CTA */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.7 }}
+            transition={{ duration: 0.7, delay: 0.68 }}
           >
             <RainbowGlassButton
               as={Link}
               to={`/recipe/${project.id}`}
               style={{
                 fontFamily: '"Futura LT Pro", system-ui, sans-serif',
-                fontSize: 11, fontWeight: 700, letterSpacing: '0.25em',
+                fontSize: 10, fontWeight: 700, letterSpacing: '0.28em',
                 textTransform: 'uppercase', color: '#f0e8d8',
-                padding: '15px 38px',
+                padding: '14px 36px',
               }}
             >
               Full Recipe →
@@ -280,157 +319,176 @@ function ProjectPanel({ project }) {
           </motion.div>
         </div>
 
-        {/* Card stack */}
-        <motion.div
-          className="hidden lg:flex items-center justify-center flex-shrink-0"
-          style={{ width: 580, height: 400 }}
-          initial={{ opacity: 0, x: isFlip ? -52 : 52 }}
-          animate={inView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 1.1, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <CardStack cards={project.cards} />
-        </motion.div>
+        {/* Card stack — floats over the image side */}
+        <div style={{
+          flex: 1,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          overflow: 'visible',
+        }}>
+          <motion.div
+            style={{ overflow: 'visible' }}
+            initial={{ opacity: 0, y: 32 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 1.1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <CardStack cards={project.cards} flip={isFlip} />
+          </motion.div>
+        </div>
       </div>
+
+      {/* Mobile layout override */}
+      <style>{`
+        @media (max-width: 768px) {
+          .lifestyle-panel-content {
+            flex-direction: column !important;
+          }
+          .lifestyle-panel-text {
+            width: 100% !important;
+            padding: 3rem 1.75rem !important;
+          }
+          .lifestyle-panel-cards {
+            display: none !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }
 
-/* ── Section header ── */
+/* ── Minimal nav button ── */
+function NavBtn({ onClick, direction }) {
+  const [hovered, setHovered] = useState(false)
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        position: 'absolute',
+        top: '50%', transform: 'translateY(-50%)',
+        [direction === 'left' ? 'left' : 'right']: 'clamp(1rem, 3vw, 2.5rem)',
+        background: 'none', border: 'none', cursor: 'none',
+        display: 'flex', alignItems: 'center', gap: 10,
+        padding: '12px 0', zIndex: 20, outline: 'none',
+      }}
+    >
+      {direction === 'left' && (
+        <motion.div animate={{ x: hovered ? -6 : 0 }} transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <svg width="40" height="1" viewBox="0 0 40 1">
+            <defs>
+              <linearGradient id="prev-grad" x1="1" y1="0" x2="0" y2="0">
+                <stop offset="0%" stopColor={hovered ? '#c4933f' : 'rgba(212,184,150,0.5)'} />
+                <stop offset="100%" stopColor="transparent" />
+              </linearGradient>
+            </defs>
+            <line x1="40" y1="0.5" x2="0" y2="0.5" stroke="url(#prev-grad)" strokeWidth="1" style={{ transition: 'all 0.25s' }} />
+          </svg>
+          <span style={{ fontFamily: '"Futura LT Pro", system-ui, sans-serif', fontSize: 8, letterSpacing: '0.4em', textTransform: 'uppercase', color: hovered ? '#c4933f' : 'rgba(212,184,150,0.35)', transition: 'color 0.25s' }}>Prev</span>
+        </motion.div>
+      )}
+      {direction === 'right' && (
+        <motion.div animate={{ x: hovered ? 6 : 0 }} transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span style={{ fontFamily: '"Futura LT Pro", system-ui, sans-serif', fontSize: 8, letterSpacing: '0.4em', textTransform: 'uppercase', color: hovered ? '#c4933f' : 'rgba(212,184,150,0.35)', transition: 'color 0.25s' }}>Next</span>
+          <svg width="40" height="1" viewBox="0 0 40 1">
+            <defs>
+              <linearGradient id="next-grad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor={hovered ? '#c4933f' : 'rgba(212,184,150,0.5)'} />
+                <stop offset="100%" stopColor="transparent" />
+              </linearGradient>
+            </defs>
+            <line x1="0" y1="0.5" x2="40" y2="0.5" stroke="url(#next-grad)" strokeWidth="1" style={{ transition: 'all 0.25s' }} />
+          </svg>
+        </motion.div>
+      )}
+    </button>
+  )
+}
+
+/* ── Section ── */
 export default function LifestyleProjects() {
   const headerRef = useRef(null)
-  const inView    = useInView(headerRef, { once: true, margin: '-60px' })
+  const [current, setCurrent] = useState(0)
+  const [dir, setDir] = useState(1)
+
+  const go = (next) => {
+    setDir(next > current ? 1 : -1)
+    setCurrent(next)
+  }
+  const prev = () => go(current === 0 ? PROJECTS.length - 1 : current - 1)
+  const next = () => go(current === PROJECTS.length - 1 ? 0 : current + 1)
 
   return (
     <section id="lifestyle">
 
-      {/* Header — video-through-text mask */}
-      <div
-        ref={headerRef}
-        className="overflow-hidden"
-        style={{
-          position: 'relative',
-          background: '#000',
-          isolation: 'isolate',
-          minHeight: 'clamp(420px, 65vh, 700px)',
-          display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
-        }}
-      >
-        {/* Video: brightness boosted so it lights the text uniformly */}
-        <video
-          autoPlay muted loop playsInline
-          style={{
-            position: 'absolute', inset: 0,
-            width: '100%', height: '100%',
-            objectFit: 'cover',
-            pointerEvents: 'none',
-            zIndex: 0,
-            filter: 'brightness(2.8) saturate(1.4)',
-          }}
-        >
-          <source src="/bg-cocktail.mp4" type="video/mp4" />
-        </video>
-
-        {/* Full-coverage multiply mask: covers the entire section so no strip shows */}
-        <div style={{
-          position: 'absolute', inset: 0, zIndex: 1,
-          background: '#000', mixBlendMode: 'multiply',
-          display: 'flex', flexDirection: 'column', justifyContent: 'center',
-          padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 8vw, 8rem) clamp(3rem, 6vw, 6rem)',
-        }}>
-          <h2 style={{
-            fontFamily: '"Cormorant Garamond", Georgia, serif',
-            fontWeight: 300, lineHeight: 0.88,
-            fontSize: 'clamp(3rem, 7vw, 8.5rem)',
-            color: '#fff',
-            margin: 0,
-          }}>
-            {['Content first.', 'Commerce second.'].map((line, i) => (
-              <div key={i} style={{ overflow: 'hidden' }}>
-                <motion.span
-                  style={{ display: 'block' }}
-                  initial={{ y: '110%' }}
-                  animate={inView ? { y: '0%' } : {}}
-                  transition={{ duration: 1.05, delay: 0.08 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  {i === 1 ? <em style={{ fontStyle: 'italic' }}>{line}</em> : line}
-                </motion.span>
-              </div>
-            ))}
-          </h2>
-        </div>
-
-        {/* Paragraph: outside the mask, sits in normal flow to anchor container height */}
-        <motion.p
-          style={{
-            position: 'relative', zIndex: 2,
-            fontFamily: '"DM Sans", system-ui, sans-serif',
-            fontSize: '0.93rem', color: 'rgba(240,232,216,0.45)',
-            lineHeight: 1.85, maxWidth: '50ch',
-            padding: '0 clamp(1.5rem, 8vw, 8rem) clamp(3rem, 6vw, 6rem)',
-          }}
-          initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.44 }}
-        >
-          The best food is inseparable from where you are, who you're with,
-          and what you've just come in from.
-          These are the recipes and rituals built around Honest&nbsp;&amp;&nbsp;Rare.
-        </motion.p>
-      </div>
-
-      {/* Full-viewport project panels */}
-      {PROJECTS.map((project, i) => (
-        <>
-          <ProjectPanel key={project.num} project={project} />
-          {i < PROJECTS.length - 1 && (
-            <div key={`divider-${i}`} style={{
-              background: '#09080b',
-              borderTop: '1px solid rgba(212,184,150,0.06)',
-              borderBottom: '1px solid rgba(212,184,150,0.06)',
-              padding: '14px 0', overflow: 'hidden',
-            }}>
-              <div className="marquee-inner" style={{ display: 'flex', width: 'max-content' }}>
-                {Array.from({ length: 2 }, (_, k) => (
-                  <div key={k} style={{ display: 'flex' }}>
-                    {['Quality over Quantity', '9,500 Products', 'No Mainstream', 'Est. 2018',
-                      'Independent Brands', 'No Algorithms', 'Honest Finds', 'Rare Selection'].map(t => (
-                      <span key={t} style={{
-                        display: 'inline-flex', alignItems: 'center', gap: '1.5rem',
-                        padding: '0 2.5rem',
-                        fontSize: '10px', letterSpacing: '0.4em', textTransform: 'uppercase',
-                        color: 'rgba(212,184,150,0.45)',
-                        fontFamily: '"Futura LT Pro", system-ui, sans-serif',
-                      }}>
-                        {t} <span style={{ width: 3, height: 3, borderRadius: '50%', background: 'rgba(212,184,150,0.3)', display: 'inline-block' }} />
-                      </span>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </>
-      ))}
-
-      {/* Journal CTA */}
-      <div
-        className="lifestyle-journal text-center"
-        style={{
-          background: '#09080b',
-          borderTop: '1px solid rgba(212,184,150,0.07)',
-          padding: '7rem 2rem',
-        }}
-      >
-        <p style={{
-          fontFamily: '"Cormorant Garamond", Georgia, serif',
-          fontWeight: 300,
-          fontSize: 'clamp(1.6rem, 3.5vw, 3rem)',
-          color: 'rgba(240,232,216,0.28)',
-          marginBottom: '2.5rem',
-        }}>
-          More in the Journal
+      {/* Section divider */}
+      <div ref={headerRef} style={{
+        background: '#0d0b09',
+        borderTop: '1px solid rgba(240,238,234,0.05)',
+        borderBottom: '1px solid rgba(240,238,234,0.05)',
+        padding: '22px clamp(1.5rem, 6vw, 6rem)',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      }}>
+        <p style={{ fontFamily: '"Futura LT Pro", system-ui, sans-serif', fontSize: 8, letterSpacing: '0.45em', textTransform: 'uppercase', color: 'rgba(240,238,234,0.2)', margin: 0 }}>
+          Journal · Recipes & Rituals
         </p>
-        <a href="#" className="btn-primary">Explore the Journal</a>
+        <p style={{ fontFamily: '"Futura LT Pro", system-ui, sans-serif', fontWeight: 300, fontSize: '0.76rem', color: 'rgba(240,238,234,0.22)', margin: 0, maxWidth: 380, textAlign: 'right', lineHeight: 1.75 }}>
+          The best food is inseparable from where you are, who you're with, and what you've just come in from.
+        </p>
       </div>
+
+      {/* Slider */}
+      <div style={{ position: 'relative', overflow: 'hidden' }}>
+        <AnimatePresence initial={false} mode="wait">
+          <motion.div
+            key={current}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+          >
+            <ProjectPanel project={PROJECTS[current]} />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Minimal nav buttons */}
+        <NavBtn onClick={prev} direction="left" />
+        <NavBtn onClick={next} direction="right" />
+
+        {/* Timeline navigation */}
+        <div style={{
+          position: 'absolute', bottom: 'clamp(1.5rem, 3vw, 2.5rem)', left: '50%', transform: 'translateX(-50%)',
+          display: 'flex', alignItems: 'center', gap: 0, zIndex: 20,
+        }}>
+          {PROJECTS.map((p, i) => (
+            <button
+              key={i}
+              onClick={() => go(i)}
+              style={{ background: 'none', border: 'none', cursor: 'none', padding: '8px 0', display: 'flex', alignItems: 'center', outline: 'none' }}
+            >
+              {/* Number */}
+              <span style={{
+                fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+                fontSize: 8, letterSpacing: '0.35em',
+                color: i === current ? 'rgba(212,184,150,0.9)' : 'rgba(212,184,150,0.22)',
+                transition: 'color 0.4s',
+                paddingRight: 10,
+              }}>{p.num}</span>
+              {/* Track segment */}
+              <div style={{ width: 40, height: 1, position: 'relative', marginRight: i < PROJECTS.length - 1 ? 10 : 0 }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'rgba(212,184,150,0.12)' }} />
+                <motion.div
+                  style={{ position: 'absolute', top: 0, left: 0, bottom: 0, background: '#c4933f', transformOrigin: 'left' }}
+                  animate={{ scaleX: i === current ? 1 : 0 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                />
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
     </section>
   )
 }

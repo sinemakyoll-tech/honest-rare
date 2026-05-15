@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { motion, useInView, useScroll, useTransform } from 'motion/react'
 import { RECIPES } from '../data/recipes'
+import { PRODUCTS } from '../data/products'
+import { useCart } from '../context/CartContext'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Cursor from '../components/Cursor'
@@ -59,6 +61,7 @@ function Step({ step, index }) {
       initial={{ opacity: 0, x: -32 }}
       animate={inView ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.75, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      className="recipe-step-grid"
       style={{
         display: 'grid',
         gridTemplateColumns: '80px 1fr',
@@ -231,7 +234,7 @@ export default function RecipePage() {
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         gap: 32, padding: '10px 20px', height: 36,
       }}>
-        <span>✦ Quality instead of quantity</span>
+        <span style={{ whiteSpace: 'nowrap' }}>✦ Quality instead of quantity</span>
         <span className="ann-hide">✦ 9,500 independent products</span>
         <span className="ann-hide">✦ No mainstream</span>
       </div>
@@ -367,6 +370,9 @@ export default function RecipePage() {
 
         {/* ── Pairing + Oil ── */}
         <PairingSection recipe={recipe} />
+
+        {/* ── Shop the Recipe ── */}
+        <ShopTheRecipe productIds={recipe.products || []} />
 
         {/* ── Related ── */}
         <RelatedSection currentId={recipe.id} />
@@ -562,6 +568,138 @@ function MethodSection({ recipe }) {
   )
 }
 
+/* ── Shop the Recipe ── */
+function ShopTheRecipe({ productIds }) {
+  const { addItem } = useCart()
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-8%' })
+  const products = productIds.map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean)
+  const [added, setAdded] = useState(null)
+
+  if (!products.length) return null
+
+  function handleAdd(product) {
+    addItem(product, 1)
+    setAdded(product.id)
+    setTimeout(() => setAdded(null), 1600)
+  }
+
+  return (
+    <section ref={ref} style={{
+      background: '#fff',
+      borderTop: '1px solid rgba(26,22,20,0.07)',
+      borderBottom: '1px solid rgba(26,22,20,0.07)',
+      padding: 'clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 8vw, 10rem)',
+    }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '2.5rem', flexWrap: 'wrap', gap: 12 }}
+        >
+          <div>
+            <p style={{
+              fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+              fontSize: 9, letterSpacing: '0.45em', textTransform: 'uppercase',
+              color: '#c4933f', marginBottom: 8,
+            }}>Shop the Recipe</p>
+            <h3 style={{
+              fontFamily: '"Cormorant Garamond", Georgia, serif',
+              fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)',
+              color: '#1a1614', lineHeight: 1,
+            }}>What you'll need.</h3>
+          </div>
+          <Link to="/bestseller" style={{
+            fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+            fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase',
+            color: 'rgba(26,22,20,0.4)', textDecoration: 'none',
+            transition: 'color 0.2s',
+          }}
+            onMouseEnter={e => e.currentTarget.style.color = '#1a1614'}
+            onMouseLeave={e => e.currentTarget.style.color = 'rgba(26,22,20,0.4)'}
+          >All Products →</Link>
+        </motion.div>
+
+        <div className="recipe-shop-grid" style={{
+          display: 'grid',
+          gridTemplateColumns: `repeat(${products.length}, 1fr)`,
+          gap: 1, background: 'rgba(26,22,20,0.07)',
+        }}>
+          {products.map((p, i) => (
+            <motion.div
+              key={p.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              style={{ background: '#fff', display: 'flex', flexDirection: 'column' }}
+            >
+              {/* Image */}
+              <Link to={`/product/${p.id}`} style={{ display: 'block', overflow: 'hidden' }}>
+                <motion.div
+                  whileHover={{ scale: 1.04 }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    height: 220,
+                    backgroundImage: `url("${p.img}")`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                />
+              </Link>
+
+              {/* Info */}
+              <div style={{ padding: '18px 20px 22px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <p style={{
+                  fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+                  fontSize: 8, letterSpacing: '0.35em', textTransform: 'uppercase',
+                  color: p.accent, marginBottom: 6,
+                }}>{p.brand}</p>
+                <Link to={`/product/${p.id}`} style={{ textDecoration: 'none', flex: 1 }}>
+                  <p style={{
+                    fontFamily: '"Cormorant Garamond", Georgia, serif',
+                    fontWeight: 400, fontSize: '1.2rem',
+                    color: '#1a1614', marginBottom: 4,
+                    transition: 'opacity 0.2s',
+                  }}
+                    onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}
+                    onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+                  >{p.name}</p>
+                  <p style={{
+                    fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+                    fontSize: 8, letterSpacing: '0.2em', textTransform: 'uppercase',
+                    color: 'rgba(26,22,20,0.3)', marginBottom: 14,
+                  }}>{p.style}</p>
+                </Link>
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
+                  <span style={{
+                    fontFamily: '"Cormorant Garamond", Georgia, serif',
+                    fontWeight: 600, fontSize: '1.2rem', color: '#1a1614',
+                  }}>€{p.price.toFixed(2)}</span>
+
+                  <motion.button
+                    onClick={() => handleAdd(p)}
+                    whileTap={{ scale: 0.96 }}
+                    style={{
+                      padding: '8px 18px',
+                      background: added === p.id ? '#7a9a6e' : '#1a1614',
+                      color: '#f0eeea', border: 'none', cursor: 'none',
+                      fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+                      fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase',
+                      transition: 'background 0.3s',
+                    }}
+                  >{added === p.id ? '✓' : '+ Cart'}</motion.button>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function RelatedSection({ currentId }) {
   const related = Object.values(RECIPES).filter(r => r.id !== currentId)
   const [hovered, setHovered] = useState(null)
@@ -653,7 +791,7 @@ function RelatedSection({ currentId }) {
                     whiteSpace: 'pre-line',
                   }}>{r.title}</h4>
                   <p style={{
-                    fontFamily: '"DM Sans", system-ui, sans-serif',
+                    fontFamily: '"Futura LT Pro", system-ui, sans-serif',
                     fontSize: '0.86rem', fontWeight: 300,
                     color: 'rgba(26,22,20,0.4)', lineHeight: 1.55,
                     marginBottom: 16,

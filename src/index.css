@@ -44,7 +44,7 @@
 
 @layer base {
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
   body {
     background-color: #f0eeea;
     color: #1a1614;
@@ -121,26 +121,61 @@
   }
 
   .gold-rule {
-    width: 40px; height: 1px;
-    background: rgba(196,147,63,0.6);
+    width: 64px; height: 1px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(196,147,63,0.25) 15%,
+      rgba(196,147,63,0.85) 50%,
+      rgba(196,147,63,0.25) 85%,
+      transparent 100%
+    );
     display: block;
   }
 
-  /* ── Apple-grade Glassmorphism ── */
+  /* ── Realistic Glassmorphism ── */
   .glass {
-    background: rgba(255,255,255,0.62);
-    backdrop-filter: blur(48px) saturate(180%);
-    -webkit-backdrop-filter: blur(48px) saturate(180%);
-    border: 1px solid rgba(255,255,255,0.75);
-    box-shadow: 0 8px 32px rgba(26,22,20,0.07), inset 0 1px 0 rgba(255,255,255,0.9);
+    background:
+      linear-gradient(
+        160deg,
+        rgba(255,255,255,0.74) 0%,
+        rgba(255,255,255,0.48) 55%,
+        rgba(255,255,255,0.62) 100%
+      );
+    backdrop-filter: blur(40px) saturate(160%) brightness(1.06);
+    -webkit-backdrop-filter: blur(40px) saturate(160%) brightness(1.06);
+    border: 1px solid rgba(255,255,255,0.58);
+    box-shadow:
+      /* depth */
+      0 24px 64px rgba(26,22,20,0.13),
+      0 6px 18px rgba(26,22,20,0.07),
+      /* top specular — brightest edge, light comes from top-left */
+      inset 0 1.5px 0 rgba(255,255,255,1),
+      /* left edge light */
+      inset 1.5px 0 0 rgba(255,255,255,0.6),
+      /* bottom inner shadow — glass thickness illusion */
+      inset 0 -1px 0 rgba(255,255,255,0.18),
+      /* right edge subtle */
+      inset -1px 0 0 rgba(255,255,255,0.12);
   }
 
   .glass-strong {
-    background: rgba(255,255,255,0.78);
-    backdrop-filter: blur(60px) saturate(200%);
-    -webkit-backdrop-filter: blur(60px) saturate(200%);
-    border: 1px solid rgba(255,255,255,0.85);
-    box-shadow: 0 16px 48px rgba(26,22,20,0.10), inset 0 1px 0 rgba(255,255,255,1);
+    background:
+      linear-gradient(
+        160deg,
+        rgba(255,255,255,0.84) 0%,
+        rgba(255,255,255,0.60) 55%,
+        rgba(255,255,255,0.74) 100%
+      );
+    backdrop-filter: blur(56px) saturate(190%) brightness(1.08);
+    -webkit-backdrop-filter: blur(56px) saturate(190%) brightness(1.08);
+    border: 1px solid rgba(255,255,255,0.70);
+    box-shadow:
+      0 28px 72px rgba(26,22,20,0.14),
+      0 8px 24px rgba(26,22,20,0.08),
+      inset 0 1.5px 0 rgba(255,255,255,1),
+      inset 1.5px 0 0 rgba(255,255,255,0.7),
+      inset 0 -1px 0 rgba(255,255,255,0.22),
+      inset -1px 0 0 rgba(255,255,255,0.14);
   }
 
   .glass-dark {
@@ -149,6 +184,26 @@
     -webkit-backdrop-filter: blur(48px) saturate(160%);
     border: 1px solid rgba(255,255,255,0.07);
     box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  }
+
+  /* ── Frosted glass — light frost on dark backgrounds ── */
+  .glass-frosted {
+    background: linear-gradient(
+      145deg,
+      rgba(248,245,238,0.97) 0%,
+      rgba(244,240,230,0.95) 60%,
+      rgba(248,245,238,0.97) 100%
+    );
+    backdrop-filter: blur(28px) saturate(140%) brightness(1.08);
+    -webkit-backdrop-filter: blur(28px) saturate(140%) brightness(1.08);
+    border: 1px solid rgba(255,255,255,0.70);
+    box-shadow:
+      0 20px 56px rgba(0,0,0,0.32),
+      0 4px 14px rgba(0,0,0,0.16),
+      inset 0 1.5px 0 rgba(255,255,255,0.90),
+      inset 1px 0 0 rgba(255,255,255,0.45),
+      inset 0 -1px 0 rgba(255,255,255,0.14),
+      inset -1px 0 0 rgba(255,255,255,0.10);
   }
 
   /* Float card — neuwebstudio + glassmorphism */
@@ -164,32 +219,35 @@
 #hr-cursor {
   position: fixed;
   width: 8px; height: 8px;
-  background: #1a1614;
+  background: #ffffff;
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
   transition: width 0.3s cubic-bezier(.34,1.56,.64,1),
-              height 0.3s cubic-bezier(.34,1.56,.64,1),
-              background 0.3s;
+              height 0.3s cubic-bezier(.34,1.56,.64,1);
 }
 #hr-cursor-ring {
   position: fixed;
   width: 38px; height: 38px;
-  border: 1px solid rgba(26,22,20,0.3);
+  border: 1.5px solid rgba(255,255,255,0.65);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9998;
   transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
   transition: width 0.4s cubic-bezier(.34,1.56,.64,1),
-              height 0.4s cubic-bezier(.34,1.56,.64,1);
+              height 0.4s cubic-bezier(.34,1.56,.64,1),
+              border-color 0.3s;
 }
-#hr-cursor.large       { width: 14px; height: 14px; background: #c4933f; }
-#hr-cursor-ring.large  { width: 54px; height: 54px; border-color: rgba(196,147,63,0.45); }
-#hr-cursor.on-dark     { background: #d4b896; }
-#hr-cursor-ring.on-dark{ border-color: rgba(212,184,150,0.45); }
-#hr-cursor.on-dark.large     { background: #c4933f; }
-#hr-cursor-ring.on-dark.large{ border-color: rgba(196,147,63,0.6); }
+#hr-cursor.large      { width: 14px; height: 14px; }
+#hr-cursor-ring.large { width: 56px; height: 56px; border-color: rgba(255,255,255,0.9); }
+
+/* ── Mobile carousel strip — hide scrollbar ── */
+.carousel-mobile-strip { -ms-overflow-style: none; scrollbar-width: none; }
+.carousel-mobile-strip::-webkit-scrollbar { display: none; }
+.nav-cat-row::-webkit-scrollbar { display: none; }
 
 /* ── Marquee ── */
 @keyframes marquee-left {
@@ -210,9 +268,25 @@
 .candle-flame { animation: flicker 1.8s ease-in-out infinite; transform-origin: bottom center; }
 
 /* ── Scrollbar ── */
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: #f0eeea; }
-::-webkit-scrollbar-thumb { background: rgba(196,147,63,0.35); border-radius: 2px; }
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(196,147,63,0.5) 15%,
+    rgba(196,147,63,0.5) 85%,
+    transparent 100%
+  );
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(196,147,63,0.75) 15%,
+    rgba(196,147,63,0.75) 85%,
+    transparent 100%
+  );
+}
 
 /* ── Float card entrance (GSAP target classes) ── */
 .fc-left  { transform: translateX(-80px) rotate(-8deg); opacity: 0; }
@@ -220,10 +294,15 @@
 .fc-top   { transform: translateY(-60px) rotate(-3deg); opacity: 0; }
 
 /* ── Responsive ── */
+@keyframes ann-ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
 @media (max-width: 768px) {
-  /* Announcement bar */
-  .announcement-bar { gap: 12px !important; padding: 10px 16px !important; }
-  .ann-hide { display: none !important; }
+  /* Announcement bar — switch to mobile ticker */
+  .ann-desktop { display: none !important; }
+  .ann-mobile  { display: block !important; }
 
   /* Nav padding */
   .nav-row { padding-left: 16px !important; padding-right: 16px !important; }
@@ -282,6 +361,29 @@
 
   /* Recipe carousel margin fix */
   .recipe-strip { margin: 0 -16px !important; }
+
+  /* Cart page */
+  .cart-layout  { grid-template-columns: 1fr !important; }
+  .cart-form-grid { grid-template-columns: 1fr !important; }
+  .cart-item-header { display: none !important; }
+  .cart-item-grid { grid-template-columns: 64px 1fr auto !important; gap: 10px !important; }
+  .cart-item-price { display: none !important; }
+  .cart-summary { position: static !important; margin-bottom: 32px; }
+
+  /* Carousel arrows hidden (no hover on touch) */
+  .carousel-arrow { display: none !important; }
+
+  /* App cocktail section */
+  .cocktail-section { padding: 0 16px 60px !important; }
+
+  /* LifestylePage hero first line — prevent horizontal overflow */
+  .lifestyle-first-line { white-space: normal !important; font-size: clamp(1.4rem, 6.5vw, 3.5rem) !important; letter-spacing: 0.02em !important; }
+
+  /* RecipePage — shop grid stacks to 2 columns */
+  .recipe-shop-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* RecipePage — step number column narrower */
+  .recipe-step-grid { grid-template-columns: 52px 1fr !important; gap: 20px !important; }
 }
 
 @media (min-width: 769px) and (max-width: 1100px) {

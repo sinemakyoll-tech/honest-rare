@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useCart } from '../context/CartContext'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -85,6 +86,7 @@ export default function Products() {
   const sectionRef = useRef(null)
   const trackRef   = useRef(null)
   const [active, setActive] = useState(0)
+  const { addItem } = useCart()
 
   useEffect(() => {
     const slides = trackRef.current?.children
@@ -141,7 +143,7 @@ export default function Products() {
 
           <div ref={trackRef} style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             {PRODUCTS.map((product, idx) => (
-              <div key={product.id} style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', opacity: idx === 0 ? 1 : 0 }}>
+              <div key={product.id} style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', opacity: idx === 0 ? 1 : 0, pointerEvents: active === idx ? 'auto' : 'none' }}>
 
                 {product.isBundle ? (
                   /* ── Bundle campaign layout ── */
@@ -217,7 +219,7 @@ export default function Products() {
                       ))}
                     </div>
 
-                    {/* Price + CTA */}
+                    {/* Price */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <span style={{
@@ -231,19 +233,6 @@ export default function Products() {
                           fontSize: '2.2rem', fontWeight: 300, color: product.accent, lineHeight: 1,
                         }}>{product.price}</span>
                       </div>
-                      <a href="#" className="btn-primary" style={{ padding: '13px 32px', fontSize: 10, background: product.accent }}>
-                        Shop Bundle
-                      </a>
-                      <a href="#" style={{
-                        padding: '12px 24px', fontSize: 10,
-                        fontFamily: '"Futura LT Pro", system-ui, sans-serif',
-                        letterSpacing: '0.3em', textTransform: 'uppercase',
-                        color: 'rgba(240,238,234,0.5)',
-                        border: '1px solid rgba(240,238,234,0.2)',
-                        textDecoration: 'none',
-                      }}>
-                        Details
-                      </a>
                     </div>
                   </>
                 ) : (
@@ -299,12 +288,6 @@ export default function Products() {
                         fontFamily: '"Cormorant Garamond", Georgia, serif',
                         fontSize: '2rem', fontWeight: 300, color: '#1a1614',
                       }}>{product.price}</span>
-                      <a href="#" className="btn-primary" style={{ padding: '13px 32px', fontSize: 10, background: product.accent }}>
-                        Add to Cart
-                      </a>
-                      <a href="#" className="btn-ghost" style={{ padding: '13px 24px', fontSize: 10 }}>
-                        Details
-                      </a>
                     </div>
                   </>
                 )}
@@ -314,7 +297,7 @@ export default function Products() {
           </div>
 
           {/* Progress dots */}
-          <div style={{ display: 'flex', gap: 8, marginTop: '3rem' }}>
+          <div style={{ display: 'flex', gap: 8, marginTop: '3rem', marginBottom: '1.5rem' }}>
             {PRODUCTS.map((_, i) => (
               <div key={i} style={{
                 width: i === active ? 24 : 6, height: 1,
@@ -324,6 +307,38 @@ export default function Products() {
                 transition: 'all 0.4s ease',
               }} />
             ))}
+          </div>
+
+          {/* CTA — outside the stacked slides so GSAP never blocks clicks */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            {p?.isBundle ? (
+              <a href="#" className="btn-primary" style={{ padding: '13px 32px', fontSize: 10, background: p.accent }}>
+                Shop Bundle
+              </a>
+            ) : (
+              <button
+                className="btn-primary"
+                style={{ padding: '13px 32px', fontSize: 10, background: p?.accent, border: 'none', cursor: 'none' }}
+                onClick={() => p && addItem({
+                  id: p.id,
+                  name: p.name,
+                  price: parseFloat(p.price.replace(/[^0-9.]/g, '')),
+                  image: p.img,
+                }, 1)}
+              >
+                Add to Cart
+              </button>
+            )}
+            <a href="#" className={p?.isDark ? '' : 'btn-ghost'} style={{
+              padding: '13px 24px', fontSize: 10,
+              fontFamily: '"Futura LT Pro", system-ui, sans-serif',
+              letterSpacing: '0.3em', textTransform: 'uppercase',
+              color: p?.isDark ? 'rgba(240,238,234,0.5)' : undefined,
+              border: p?.isDark ? '1px solid rgba(240,238,234,0.2)' : undefined,
+              textDecoration: 'none',
+            }}>
+              Details
+            </a>
           </div>
         </div>
 

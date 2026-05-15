@@ -1,29 +1,60 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useInView } from 'motion/react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Newsletter() {
-  const ref     = useRef(null)
-  const inView  = useInView(ref, { once: true, margin: '-80px' })
+  const sectionRef = useRef(null)
+  const bgRef      = useRef(null)
+  const ref        = useRef(null)
+  const inView     = useInView(ref, { once: true, margin: '-80px' })
   const [email, setEmail] = useState('')
   const [sent,  setSent]  = useState(false)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(bgRef.current,
+        { yPercent: -10 },
+        {
+          yPercent: 10,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        }
+      )
+    })
+    return () => ctx.revert()
+  }, [])
 
   const handle = () => {
     if (email.includes('@')) { setSent(true) }
   }
 
   return (
-    <section ref={ref}
-             className="relative overflow-hidden"
-             style={{ background: 'linear-gradient(180deg, #111010 0%, #1a1614 100%)' }}>
-
-      {/* Minimalist interior / stone texture */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: `url('https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=1920&q=75&auto=format&fit=crop')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        opacity: 0.055,
-        mixBlendMode: 'luminosity',
-      }}/>
+    <section
+      ref={(el) => { sectionRef.current = el; ref.current = el }}
+      className="relative overflow-hidden"
+      style={{ background: 'linear-gradient(180deg, #111010 0%, #1a1614 100%)' }}
+    >
+      {/* Parallax background image */}
+      <div
+        ref={bgRef}
+        className="absolute pointer-events-none"
+        style={{
+          top: '-12%', left: 0, right: 0, height: '124%',
+          backgroundImage: `url('https://images.unsplash.com/photo-1574096079513-d8259312b785?w=1920&q=90&auto=format&fit=crop')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.18,
+          mixBlendMode: 'luminosity',
+        }}
+      />
 
       {/* Background ghost text */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
@@ -40,7 +71,7 @@ export default function Newsletter() {
 
       <div className="relative px-6 md:px-16 py-32 max-w-screen-xl mx-auto">
         <div className="max-w-2xl mx-auto text-center">
-          <motion.p className="section-label mb-8"
+          <motion.p className="section-label mb-8" style={{ color: '#c4933f', letterSpacing: '0.45em' }}
             initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
           >
@@ -53,17 +84,18 @@ export default function Newsletter() {
             initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.1 }}
           >
-            Hear from the grove<br/>
+            Hear about new finds<br/>
             <span style={{ fontFamily: '"Born Ready Slanted", cursive', fontStyle: 'normal', color: '#d4b896' }}>before anyone else.</span>
           </motion.h2>
 
           <motion.p
-            className="font-body text-sm text-cream/38 leading-loose mb-14 mx-auto max-w-md"
+            className="font-body text-sm leading-loose mb-14 mx-auto max-w-md"
+            style={{ color: 'rgba(240,238,234,0.52)' }}
             initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.25 }}
           >
-            We write rarely. Every message is worth reading. Harvest news,
-            new expressions, limited releases, and the occasional letter from the estate.
+            We write rarely. Every message is worth reading. New arrivals,
+            limited drops, maker stories, and the occasional discovery that surprised even us.
             No noise. Never.
           </motion.p>
 
@@ -109,7 +141,8 @@ export default function Newsletter() {
           )}
 
           <motion.p
-            className="font-body text-[11px] text-cream/22 mt-6 tracking-wide"
+            className="font-body text-[11px] mt-6 tracking-wide"
+            style={{ color: 'rgba(240,238,234,0.35)' }}
             initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.5 }}
           >
