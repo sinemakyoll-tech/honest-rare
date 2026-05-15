@@ -330,17 +330,18 @@ export default function PitchDeckPage() {
             {slide.annotations.map((_, i) => {
               const dx = dotPositions[i]?.x ?? 0
               const dy = dotPositions[i]?.y ?? 0
+              const half = pinOuter / 2
               return (
-                <g key={`pin-${i}`} transform={`translate(${dx}, ${dy})`}>
-                  <motion.circle cx={0} cy={0} fill="rgba(196,63,63,0.27)"
-                    initial={{ r: 0 }} animate={{ r: pinOuter / 2 }}
-                    transition={{ delay: 0.2 + i * 0.1, duration: 0.35, ease: [0.34, 1.56, 0.64, 1] }}
-                  />
-                  <motion.circle cx={0} cy={0} fill="rgba(196,63,63,0.27)"
-                    initial={{ r: 0 }} animate={{ r: pinInner / 2 }}
-                    transition={{ delay: 0.2 + i * 0.1, duration: 0.35, ease: [0.34, 1.56, 0.64, 1] }}
-                  />
-                </g>
+                <motion.image
+                  key={`pin-${i}`}
+                  href="/deck-assets/pin.png"
+                  x={dx - half} y={dy - half}
+                  width={pinOuter} height={pinOuter}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  style={{ transformOrigin: `${dx}px ${dy}px` }}
+                  transition={{ delay: 0.2 + i * 0.1, duration: 0.35, ease: [0.34, 1.56, 0.64, 1] }}
+                />
               )
             })}
           </svg>
