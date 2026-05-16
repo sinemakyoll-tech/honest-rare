@@ -83,7 +83,7 @@ const SLIDES = [
   {
     id: '04',
     phase: 'PLATFORM POWER',
-    screenshot: '/pitch/07-brand.png',
+    screenshot: '/pitch/04-brand.png',
     annotations: [
       {
         dot: { x: 30, y: 8 },
