@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 
 const F = '"Futura LT Pro", system-ui, sans-serif'
@@ -170,6 +170,7 @@ export default function PitchDeckPage() {
   const [current, setCurrent] = useState(0)
   const [size, setSize] = useState({ w: window.innerWidth, h: window.innerHeight })
   const slide = SLIDES[current]
+  const touchStartX = useRef(null)
 
   useEffect(() => {
     const onResize = () => setSize({ w: window.innerWidth, h: window.innerHeight })
@@ -185,6 +186,17 @@ export default function PitchDeckPage() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [])
+
+  const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX }
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return
+    const delta = touchStartX.current - e.changedTouches[0].clientX
+    if (Math.abs(delta) > 50) {
+      if (delta > 0) setCurrent(c => Math.min(c + 1, SLIDES.length - 1))
+      else setCurrent(c => Math.max(c - 1, 0))
+    }
+    touchStartX.current = null
+  }
 
   const innerW   = size.w - PAD_H * 2
   const innerH   = size.h - PAD_V * 2
@@ -210,7 +222,10 @@ export default function PitchDeckPage() {
       width: '100vw', height: '100vh', overflow: 'hidden',
       background: '#1a1614', position: 'relative',
       fontFamily: F, cursor: 'default',
-    }}>
+    }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
 
       {/* Top bar */}
       <div style={{
