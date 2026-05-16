@@ -303,7 +303,7 @@ export default function PitchDeckPage() {
                   {ann.title}
                 </h3>
                 <div style={{ width: 20, height: 1, background: 'rgba(196,147,63,0.4)', marginBottom: 8, flexShrink: 0 }} />
-                <div style={{ flex: 1, overflowY: 'auto', scrollbarWidth: 'none' }}>
+                <div className="pitch-card-body" style={{ flex: 1 }}>
                   <p style={{ fontWeight: 300, fontSize: '0.64rem', lineHeight: 1.65, color: 'rgba(248,247,244,0.5)', letterSpacing: '0.01em' }}>
                     {ann.body}
                   </p>

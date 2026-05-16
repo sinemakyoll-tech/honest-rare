@@ -268,6 +268,13 @@
 .candle-flame { animation: flicker 1.8s ease-in-out infinite; transform-origin: bottom center; }
 
 /* ── Scrollbar ── */
+/* ── Pitch deck card body scrollbar ── */
+.pitch-card-body { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(196,147,63,0.45) transparent; }
+.pitch-card-body::-webkit-scrollbar { width: 3px; }
+.pitch-card-body::-webkit-scrollbar-track { background: rgba(255,255,255,0.06); border-radius: 2px; }
+.pitch-card-body::-webkit-scrollbar-thumb { background: rgba(196,147,63,0.45); border-radius: 2px; }
+.pitch-card-body::-webkit-scrollbar-thumb:hover { background: rgba(196,147,63,0.75); }
+
 ::-webkit-scrollbar { width: 2px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
