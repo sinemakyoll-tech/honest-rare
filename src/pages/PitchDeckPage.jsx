@@ -87,9 +87,9 @@ const SLIDES = [
     annotations: [
       {
         dot: { x: 30, y: 8 },
-        label: 'Product Card Architecture & System',
-        title: 'Editorial Transparency & Discovery',
-        body: 'Our product cards are designed to bridge the gap between editorial storytelling and transactional efficiency. To address the modern, health-conscious consumer, we prioritized a minimalist, shopping-oriented aesthetic that delivers deep product transparency through an "editorial voice." Instead of a standard H2 title, we utilized a brand manifesto — "The Selection · 9,500 Products · No Mainstream" — framed by spatial gradient lines to establish a premium stage without creating visual roadblocks. By choosing Futura LT Pro with 0.5em letter-spacing, we ensure typographic consistency that guides the user\'s eye seamlessly from the cinematic hero section into the discovery phase. This strategic placement, occurring immediately after the first carousel, ensures that the brand identity is fully internalized before the user transitions into a high-intent, informed purchase.',
+        label: 'Product Card Architecture',
+        title: 'Minimalist Transparency & Conversion',
+        body: 'To accommodate today\'s highly health-conscious consumers, we provide deeply detailed product information that perfectly reflects Honest & Rare\'s premium brand identity. To balance this rich depth of information, the product card UI is kept clean, minimal, and strictly shopping-oriented, ensuring a friction-free visual layout. Positioned strategically right after the initial immersion carousel, the product grid introduces the purchasing phase at the perfect cognitive moment — guiding users toward a smooth, high-intent conversion only after the core brand perception has been fully established.',
       },
       {
         dot: { x: 55, y: 45 },
