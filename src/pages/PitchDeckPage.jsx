@@ -87,15 +87,15 @@ const SLIDES = [
     annotations: [
       {
         dot: { x: 30, y: 8 },
-        label: 'Product Card Architecture',
-        title: 'Minimalist Transparency & Conversion',
-        body: 'To accommodate today\'s highly health-conscious consumers, we provide deeply detailed product information that perfectly reflects Honest & Rare\'s premium brand identity. To balance this rich depth of information, the product card UI is kept clean, minimal, and strictly shopping-oriented, ensuring a friction-free visual layout. Positioned strategically right after the initial immersion carousel, the product grid introduces the purchasing phase at the perfect cognitive moment — guiding users toward a smooth, high-intent conversion only after the core brand perception has been fully established.',
+        label: 'Brand Header',
+        title: 'Maker at the Centre',
+        body: 'Every independent brewery, winery or producer gets their own editorial page — story, heritage, and full product range in one place. The maker is the brand.',
       },
       {
         dot: { x: 55, y: 45 },
-        label: 'Product Cards Section',
-        title: 'Deep Product Intelligence',
-        body: 'ABV, IBU, tasting notes, hop variety, food pairing — each card carries the full story of the product. Informed buyers convert at a higher rate and return more often.',
+        label: 'Product Card Architecture',
+        title: 'Minimalist Transparency & Conversion',
+        body: 'To accommodate today\'s highly health-conscious consumers, we provide deeply detailed product information that perfectly reflects Honest & Rare\'s premium brand identity. To balance this rich depth of information, the product card UI is kept clean, minimal, and strictly shopping-oriented, ensuring a friction-free visual layout. Positioned strategically right after the initial immersion carousel, the product grid introduces the purchasing phase at the perfect cognitive moment — guiding users toward a smooth, high-intent conversion only after the core brand perception has been fully established.',
       },
       {
         dot: { x: 16, y: 58 },
