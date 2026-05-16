@@ -111,20 +111,20 @@ const SLIDES = [
     screenshot: '/pitch/05-recipe.png',
     annotations: [
       {
-        dot: { x: 40, y: 35 },
+        dot: { x: 22, y: 10 },
         label: 'Recipe Content',
         title: 'Product + Story Bridge',
         body: 'Recipe and cocktail content places the product inside a usage context. The content → product funnel goes far beyond the classic funnel model.',
       },
       {
-        dot: { x: 60, y: 55 },
+        dot: { x: 55, y: 28 },
         label: 'Ingredient Link',
         title: 'Ingredient = Product Page',
         body: 'Recipe ingredients link directly to product pages. Before the user asks "where can I find this gin?", the system has already answered.',
       },
       {
-        dot: { x: 45, y: 72 },
-        label: 'Editorial Style',
+        dot: { x: 72, y: 68 },
+        label: 'Life Moments',
         title: 'Selling a Lifestyle',
         body: 'In the 2030 vision, H&R is not a store — it is an editorial platform. Telling the moments of life through stories, fully reflecting its audience.',
       },
