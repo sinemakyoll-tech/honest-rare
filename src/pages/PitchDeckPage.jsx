@@ -34,6 +34,7 @@ const SLIDES = [
     id: '02',
     phase: 'EDITORIAL PLATFORM',
     screenshot: '/pitch/02-lifestyle.png',
+    scrollable: true,
     annotations: [
       {
         dot: { x: 50, y: 12 },
@@ -144,8 +145,12 @@ const CARD_GAP_RATIO = 34 / 1080
 export default function PitchDeckPage() {
   const [current, setCurrent] = useState(0)
   const [size, setSize] = useState({ w: window.innerWidth, h: window.innerHeight })
+  const [ssScrollTop, setSsScrollTop] = useState(0)
+  const [imgNaturalSize, setImgNaturalSize] = useState({ w: 1440, h: 3000 })
   const slide = SLIDES[current]
   const touchStartX = useRef(null)
+  const ssContainerRef = useRef(null)
+  const scrollableRef = useRef(false)
 
   useEffect(() => {
     const onResize = () => setSize({ w: window.innerWidth, h: window.innerHeight })
@@ -174,8 +179,16 @@ export default function PitchDeckPage() {
   }
 
   useEffect(() => {
+    setSsScrollTop(0)
+    setImgNaturalSize({ w: 1440, h: 3000 })
+    if (ssContainerRef.current) ssContainerRef.current.scrollTop = 0
+    scrollableRef.current = !!SLIDES[current].scrollable
+  }, [current])
+
+  useEffect(() => {
     let cooldown = false
     const onWheel = (e) => {
+      if (scrollableRef.current) return
       if (cooldown) return
       const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
       if (Math.abs(delta) < 15) return
@@ -197,9 +210,15 @@ export default function PitchDeckPage() {
   const pinInner = Math.round(innerH * PIN_R_INNER)
   const cardH    = (innerH - cardGap * 2) / 3
 
-  const dotPositions = slide.annotations.map((a, i) => ({
+  const displayedImgH = slide.scrollable
+    ? ssW * (imgNaturalSize.h / imgNaturalSize.w)
+    : innerH
+
+  const dotPositions = slide.annotations.map((a) => ({
     x: PAD_H + ssW * (a.dot.x / 100),
-    y: PAD_V + innerH * (a.dot.y / 100),
+    y: slide.scrollable
+      ? PAD_V + displayedImgH * (a.dot.y / 100) - ssScrollTop
+      : PAD_V + innerH * (a.dot.y / 100),
   }))
 
   const cardCenters = slide.annotations.map((_, i) =>
@@ -256,8 +275,24 @@ export default function PitchDeckPage() {
                 Honest & Rare
               </span>
             </div>
-            <img src={slide.screenshot} alt="" onError={e => { e.target.style.display = 'none' }}
-              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', zIndex: 1 }} />
+            {slide.scrollable ? (
+              <>
+                <div ref={ssContainerRef} onScroll={e => setSsScrollTop(e.currentTarget.scrollTop)}
+                  style={{ position: 'absolute', inset: 0, overflowY: 'auto', scrollbarWidth: 'none', zIndex: 1 }}>
+                  <img src={slide.screenshot} alt=""
+                    onLoad={e => setImgNaturalSize({ w: e.target.naturalWidth, h: e.target.naturalHeight })}
+                    style={{ width: '100%', height: 'auto', display: 'block' }} />
+                </div>
+                {/* Bottom fade — scroll hint */}
+                <div style={{
+                  position: 'absolute', bottom: 0, left: 0, right: 0, height: 80, zIndex: 2, pointerEvents: 'none',
+                  background: 'linear-gradient(to top, rgba(26,22,20,0.6) 0%, transparent 100%)',
+                }} />
+              </>
+            ) : (
+              <img src={slide.screenshot} alt="" onError={e => { e.target.style.display = 'none' }}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', zIndex: 1 }} />
+            )}
 
           </div>
 
@@ -311,6 +346,8 @@ export default function PitchDeckPage() {
               const dx = dotPositions[i]?.x ?? 0
               const dy = dotPositions[i]?.y ?? 0
               const cy = cardCenters[i] ?? 0
+              const inView = !slide.scrollable || (dy >= PAD_V - pinOuter && dy <= PAD_V + innerH + pinOuter)
+              if (!inView) return null
               const angle = Math.atan2(cy - dy, ssRight - dx)
               const sx = dx + Math.cos(angle) * (pinOuter / 2)
               const sy = dy + Math.sin(angle) * (pinOuter / 2)
@@ -338,6 +375,8 @@ export default function PitchDeckPage() {
               const dx = dotPositions[i]?.x ?? 0
               const dy = dotPositions[i]?.y ?? 0
               const half = pinOuter / 2
+              const inView = !slide.scrollable || (dy >= PAD_V - half && dy <= PAD_V + innerH + half)
+              if (!inView) return null
               return (
                 <motion.image
                   key={`pin-${i}`}
