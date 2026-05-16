@@ -187,8 +187,6 @@ export default function PitchDeckPage() {
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
-  const wheelCooldown = useRef(false)
-
   const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX }
   const handleTouchEnd = (e) => {
     if (touchStartX.current === null) return
@@ -200,15 +198,19 @@ export default function PitchDeckPage() {
     touchStartX.current = null
   }
 
-  const handleWheel = (e) => {
-    if (wheelCooldown.current) return
-    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
-    if (Math.abs(delta) < 30) return
-    wheelCooldown.current = true
-    setTimeout(() => { wheelCooldown.current = false }, 700)
-    if (delta > 0) setCurrent(c => Math.min(c + 1, SLIDES.length - 1))
-    else setCurrent(c => Math.max(c - 1, 0))
-  }
+  useEffect(() => {
+    let cooldown = false
+    const onWheel = (e) => {
+      if (cooldown) return
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
+      if (Math.abs(delta) < 15) return
+      cooldown = true
+      setTimeout(() => { cooldown = false }, 700)
+      setCurrent(c => delta > 0 ? Math.min(c + 1, SLIDES.length - 1) : Math.max(c - 1, 0))
+    }
+    window.addEventListener('wheel', onWheel, { passive: true })
+    return () => window.removeEventListener('wheel', onWheel)
+  }, [])
 
   const innerW   = size.w - PAD_H * 2
   const innerH   = size.h - PAD_V * 2
@@ -237,7 +239,6 @@ export default function PitchDeckPage() {
     }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      onWheel={handleWheel}
     >
 
       {/* Top bar */}
