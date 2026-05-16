@@ -228,12 +228,18 @@ export default function PitchDeckPage() {
   return (
     <div style={{
       width: '100vw', height: '100vh', overflow: 'hidden',
-      background: '#1a1614', position: 'relative',
+      background: '#0c0a08', position: 'relative',
       fontFamily: F, cursor: 'default',
     }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
+
+      {/* Ambient glow */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
+        background: 'radial-gradient(ellipse 65% 55% at 38% 50%, rgba(196,147,63,0.05) 0%, transparent 100%)',
+      }} />
 
       {/* Top bar */}
       <div style={{
@@ -241,14 +247,14 @@ export default function PitchDeckPage() {
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '24px 48px', zIndex: 30,
       }}>
-        <span style={{ fontSize: 9, letterSpacing: '0.35em', color: 'rgba(240,238,234,0.22)', textTransform: 'uppercase' }}>
+        <span style={{ fontSize: 9, letterSpacing: '0.35em', color: 'rgba(212,184,150,0.3)', textTransform: 'uppercase' }}>
           Honest & Rare — UX Strategy
         </span>
         <motion.span key={slide.phase} initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          style={{ fontSize: 9, letterSpacing: '0.35em', color: 'rgba(196,147,63,0.6)', textTransform: 'uppercase' }}>
+          style={{ fontSize: 9, letterSpacing: '0.35em', color: 'rgba(196,147,63,0.75)', textTransform: 'uppercase' }}>
           {slide.phase}
         </motion.span>
-        <span style={{ fontSize: 9, letterSpacing: '0.35em', color: 'rgba(240,238,234,0.22)', textTransform: 'uppercase' }}>
+        <span style={{ fontSize: 9, letterSpacing: '0.35em', color: 'rgba(212,184,150,0.3)', textTransform: 'uppercase' }}>
           {String(current + 1).padStart(2, '0')} / {String(SLIDES.length).padStart(2, '0')}
         </span>
       </div>
@@ -308,8 +314,8 @@ export default function PitchDeckPage() {
                 transition={{ delay: 0.15 + i * 0.1, duration: 0.45 }}
                 style={{
                   flex: 1,
-                  background: 'rgba(248,247,244,0.15)',
-                  border: '1px solid rgba(255,255,255,0.6)',
+                  background: 'rgba(196,147,63,0.04)',
+                  border: '1px solid rgba(196,147,63,0.22)',
                   borderRadius: 50,
                   padding: '16px 24px',
                   display: 'flex', flexDirection: 'column',
@@ -328,7 +334,7 @@ export default function PitchDeckPage() {
                 </h3>
                 <div style={{ width: 20, height: 1, background: 'rgba(196,147,63,0.4)', marginBottom: 8, flexShrink: 0 }} />
                 <div className="pitch-card-body" style={{ flex: 1 }}>
-                  <p style={{ fontWeight: 300, fontSize: '0.64rem', lineHeight: 1.65, color: 'rgba(248,247,244,0.5)', letterSpacing: '0.01em' }}>
+                  <p style={{ fontWeight: 300, fontSize: '0.64rem', lineHeight: 1.65, color: 'rgba(212,184,150,0.45)', letterSpacing: '0.01em' }}>
                     {ann.body}
                   </p>
                 </div>
@@ -403,7 +409,7 @@ export default function PitchDeckPage() {
         {SLIDES.map((_, i) => (
           <button key={i} onClick={() => setCurrent(i)} style={{
             width: i === current ? 20 : 6, height: 6, borderRadius: 3,
-            background: i === current ? '#c4933f' : 'rgba(240,238,234,0.18)',
+            background: i === current ? '#c4933f' : 'rgba(196,147,63,0.18)',
             border: 'none', cursor: 'pointer', padding: 0, transition: 'all 0.3s ease',
           }} />
         ))}
@@ -413,20 +419,20 @@ export default function PitchDeckPage() {
         <button onClick={() => setCurrent(c => c - 1)} style={{
           position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)',
           background: 'none', border: 'none', cursor: 'pointer',
-          color: 'rgba(240,238,234,0.22)', fontSize: 18, padding: 10, zIndex: 30,
+          color: 'rgba(212,184,150,0.25)', fontSize: 18, padding: 10, zIndex: 30,
         }}
-          onMouseEnter={e => e.currentTarget.style.color = 'rgba(240,238,234,0.65)'}
-          onMouseLeave={e => e.currentTarget.style.color = 'rgba(240,238,234,0.22)'}
+          onMouseEnter={e => e.currentTarget.style.color = 'rgba(196,147,63,0.8)'}
+          onMouseLeave={e => e.currentTarget.style.color = 'rgba(212,184,150,0.25)'}
         >←</button>
       )}
       {current < SLIDES.length - 1 && (
         <button onClick={() => setCurrent(c => c + 1)} style={{
           position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)',
           background: 'none', border: 'none', cursor: 'pointer',
-          color: 'rgba(240,238,234,0.22)', fontSize: 18, padding: 10, zIndex: 30,
+          color: 'rgba(212,184,150,0.25)', fontSize: 18, padding: 10, zIndex: 30,
         }}
-          onMouseEnter={e => e.currentTarget.style.color = 'rgba(240,238,234,0.65)'}
-          onMouseLeave={e => e.currentTarget.style.color = 'rgba(240,238,234,0.22)'}
+          onMouseEnter={e => e.currentTarget.style.color = 'rgba(196,147,63,0.8)'}
+          onMouseLeave={e => e.currentTarget.style.color = 'rgba(212,184,150,0.25)'}
         >→</button>
       )}
     </div>
