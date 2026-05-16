@@ -98,7 +98,7 @@ const SLIDES = [
         body: 'ABV, IBU, tasting notes, hop variety, food pairing — each card carries the full story of the product. Informed buyers convert at a higher rate and return more often.',
       },
       {
-        dot: { x: 9, y: 35 },
+        dot: { x: 9, y: 58 },
         label: 'Kitchen Section',
         title: 'Recipe × Product Bridge',
         body: '"From the Feldmann Kitchen" ties recipes directly to the brewery\'s range. Content becomes commerce — a reader cooks the recipe, the ingredients are already in the cart.',
