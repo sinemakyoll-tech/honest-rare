@@ -87,9 +87,9 @@ const SLIDES = [
     annotations: [
       {
         dot: { x: 30, y: 8 },
-        label: 'Brand Header',
-        title: 'Maker at the Centre',
-        body: 'Every independent brewery, winery or producer gets their own editorial page — story, heritage, and full product range in one place. The maker is the brand.',
+        label: 'Product Card Architecture & System',
+        title: 'Editorial Transparency & Discovery',
+        body: 'Our product cards are designed to bridge the gap between editorial storytelling and transactional efficiency. To address the modern, health-conscious consumer, we prioritized a minimalist, shopping-oriented aesthetic that delivers deep product transparency through an "editorial voice." Instead of a standard H2 title, we utilized a brand manifesto — "The Selection · 9,500 Products · No Mainstream" — framed by spatial gradient lines to establish a premium stage without creating visual roadblocks. By choosing Futura LT Pro with 0.5em letter-spacing, we ensure typographic consistency that guides the user\'s eye seamlessly from the cinematic hero section into the discovery phase. This strategic placement, occurring immediately after the first carousel, ensures that the brand identity is fully internalized before the user transitions into a high-intent, informed purchase.',
       },
       {
         dot: { x: 55, y: 45 },
