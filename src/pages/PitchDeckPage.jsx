@@ -87,9 +87,9 @@ const SLIDES = [
     annotations: [
       {
         dot: { x: 30, y: 8 },
-        label: 'Brand Header',
-        title: 'Maker at the Centre',
-        body: 'Every independent brewery, winery or producer gets their own editorial page — story, heritage, and full product range in one place. The maker is the brand.',
+        label: 'Maker-Centric Storytelling',
+        title: 'Humanizing the Transaction',
+        body: 'Instead of using a generic category title, we lead with "Feldmann Brauerei" and its heritage to shift the focus from "buying a product" to "supporting a maker." By explicitly stating "Family-owned since 1887" and "Six generations of tradition," we provide immediate social proof and historical validation for the brand\'s "Independent" and "Rare" claims. This editorial approach serves two critical UX purposes: Trust-Based Transparency — using keywords like "unfiltered" and "uncompromising" directly addresses the health-conscious consumer\'s need for authenticity and raw quality. Emotional Anchoring — it transforms the grid into a narrative chapter. Before the user sees a single price tag, they have already internalized the brewery\'s philosophy, making the subsequent purchase an act of connection rather than a simple exchange.',
       },
       {
         dot: { x: 55, y: 45 },
