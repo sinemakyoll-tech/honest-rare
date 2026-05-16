@@ -99,9 +99,9 @@ const SLIDES = [
       },
       {
         dot: { x: 16, y: 58 },
-        label: 'Kitchen Section',
-        title: 'Recipe × Product Bridge',
-        body: '"From the Feldmann Kitchen" ties recipes directly to the brewery\'s range. Content becomes commerce — a reader cooks the recipe, the ingredients are already in the cart.',
+        label: 'Discovery & Precision Filtering',
+        title: 'The Curated Educational Guide',
+        body: 'Our filtering system is designed to provide users with absolute granular control, allowing them to navigate through the complex world of craft products with surgical precision. Beyond its functional utility, the sidebar serves as a vital navigational guide for new visitors, educating them on the nuances of styles, regions, and sensory profiles. By offering exhaustive detail — from alcohol content to specific taste notes — we eliminate the "paradox of choice," ensuring that the right user is matched with the right product every time. This transforms the traditional search process into a guided discovery experience that builds both user confidence and brand authority.',
       },
     ],
   },
