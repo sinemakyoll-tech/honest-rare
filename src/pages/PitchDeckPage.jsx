@@ -7,7 +7,7 @@ const SERIF = '"Cormorant Garamond", Georgia, serif'
 const SLIDES = [
   {
     id: '01',
-    phase: 'CURRENT STATE',
+    phase: 'HOMEPAGE',
     screenshot: '/pitch/01-nav.png',
     annotations: [
       {
