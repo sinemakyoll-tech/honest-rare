@@ -187,6 +187,8 @@ export default function PitchDeckPage() {
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
+  const wheelCooldown = useRef(false)
+
   const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX }
   const handleTouchEnd = (e) => {
     if (touchStartX.current === null) return
@@ -196,6 +198,16 @@ export default function PitchDeckPage() {
       else setCurrent(c => Math.max(c - 1, 0))
     }
     touchStartX.current = null
+  }
+
+  const handleWheel = (e) => {
+    if (wheelCooldown.current) return
+    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
+    if (Math.abs(delta) < 30) return
+    wheelCooldown.current = true
+    setTimeout(() => { wheelCooldown.current = false }, 700)
+    if (delta > 0) setCurrent(c => Math.min(c + 1, SLIDES.length - 1))
+    else setCurrent(c => Math.max(c - 1, 0))
   }
 
   const innerW   = size.w - PAD_H * 2
@@ -225,6 +237,7 @@ export default function PitchDeckPage() {
     }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onWheel={handleWheel}
     >
 
       {/* Top bar */}
