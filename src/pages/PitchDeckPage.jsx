@@ -155,6 +155,31 @@ const SLIDES = [
       },
     ],
   },
+  {
+    id: '07',
+    phase: 'PLATFORM POWER',
+    screenshot: '/pitch/07-brand.png',
+    annotations: [
+      {
+        dot: { x: 30, y: 8 },
+        label: 'Brand Header',
+        title: 'Maker at the Centre',
+        body: 'Every independent brewery, winery or producer gets their own editorial page — story, heritage, and full product range in one place. The maker is the brand.',
+      },
+      {
+        dot: { x: 55, y: 45 },
+        label: 'Product Cards',
+        title: 'Deep Product Intelligence',
+        body: 'ABV, IBU, tasting notes, hop variety, food pairing — each card carries the full story of the product. Informed buyers convert at a higher rate and return more often.',
+      },
+      {
+        dot: { x: 50, y: 88 },
+        label: 'Kitchen Section',
+        title: 'Recipe × Product Bridge',
+        body: '"From the Feldmann Kitchen" ties recipes directly to the brewery\'s range. Content becomes commerce — a reader cooks the recipe, the ingredients are already in the cart.',
+      },
+    ],
+  },
 ]
 
 // Figma Frame 5: 1872×1080 — screenshot 1184px, gap 151px, card 537px
