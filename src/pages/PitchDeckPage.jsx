@@ -98,7 +98,7 @@ const SLIDES = [
         body: 'ABV, IBU, tasting notes, hop variety, food pairing — each card carries the full story of the product. Informed buyers convert at a higher rate and return more often.',
       },
       {
-        dot: { x: 9, y: 58 },
+        dot: { x: 16, y: 58 },
         label: 'Kitchen Section',
         title: 'Recipe × Product Bridge',
         body: '"From the Feldmann Kitchen" ties recipes directly to the brewery\'s range. Content becomes commerce — a reader cooks the recipe, the ingredients are already in the cart.',
@@ -272,24 +272,27 @@ export default function PitchDeckPage() {
                   background: 'rgba(248,247,244,0.15)',
                   border: '1px solid rgba(255,255,255,0.6)',
                   borderRadius: 50,
-                  padding: '18px 28px',
-                  display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                  padding: '16px 24px',
+                  display: 'flex', flexDirection: 'column',
+                  overflow: 'hidden',
                 }}
               >
-                <p style={{ fontSize: 8, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'rgba(196,147,63,0.8)', marginBottom: 8 }}>
+                <p style={{ fontSize: 8, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'rgba(196,147,63,0.8)', marginBottom: 7, flexShrink: 0 }}>
                   {ann.label}
                 </p>
                 <h3 style={{
                   fontFamily: SERIF, fontWeight: 300,
-                  fontSize: 'clamp(0.95rem, 1.3vw, 1.25rem)',
-                  color: '#f8f7f4', lineHeight: 1.1, marginBottom: 10,
+                  fontSize: 'clamp(0.88rem, 1.2vw, 1.15rem)',
+                  color: '#f8f7f4', lineHeight: 1.1, marginBottom: 8, flexShrink: 0,
                 }}>
                   {ann.title}
                 </h3>
-                <div style={{ width: 20, height: 1, background: 'rgba(196,147,63,0.4)', marginBottom: 10 }} />
-                <p style={{ fontWeight: 300, fontSize: '0.68rem', lineHeight: 1.75, color: 'rgba(248,247,244,0.5)', letterSpacing: '0.01em' }}>
-                  {ann.body}
-                </p>
+                <div style={{ width: 20, height: 1, background: 'rgba(196,147,63,0.4)', marginBottom: 8, flexShrink: 0 }} />
+                <div style={{ flex: 1, overflowY: 'auto', scrollbarWidth: 'none' }}>
+                  <p style={{ fontWeight: 300, fontSize: '0.64rem', lineHeight: 1.65, color: 'rgba(248,247,244,0.5)', letterSpacing: '0.01em' }}>
+                    {ann.body}
+                  </p>
+                </div>
               </motion.div>
             ))}
           </div>
