@@ -93,7 +93,7 @@ const SLIDES = [
       },
       {
         dot: { x: 55, y: 45 },
-        label: 'Product Cards',
+        label: 'Product Cards Section',
         title: 'Deep Product Intelligence',
         body: 'ABV, IBU, tasting notes, hop variety, food pairing — each card carries the full story of the product. Informed buyers convert at a higher rate and return more often.',
       },
